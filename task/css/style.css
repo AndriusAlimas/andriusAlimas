@@ -1,3 +1,9 @@
+header h1{
+    width: 100%;
+    text-align: center;
+    margin: 15vh 5vw;
+}
+
 #preloader{
     position: fixed;
     top: 0;
