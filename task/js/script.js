@@ -14,7 +14,8 @@ $("#weather_api").click(()=>{
     dataType: 'json',
     data: {
       lat: $('#lat').val(),
-      lng: $('#lng').val()
+      lng: $('#lng').val(),
+      radius: $('#radius').val()
     },
     success: function(result){
       // for testing only to see result in console
