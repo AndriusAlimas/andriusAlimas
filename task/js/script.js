@@ -58,3 +58,28 @@ $("#weather_api").click(()=>{
     }
   })
 });
+
+// ajax call when you type in text places input field
+$("#place").change(()=>{
+  $.ajax({
+    url: "php/getPosition.php",
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      place: $('#place').val()
+    },
+    success: function(result){
+      // for testing only to see result in console
+      // console.log(JSON.stringify(result));
+      if (result.status.name == "ok") {
+         console.log(result.data[0].referencePosition);
+        $('#lat').val(result.data[0].referencePosition.latitude);
+        $('#lng').val(result.data[0].referencePosition.longitude);
+      }
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+      // your error code
+      $('#result').html("<p class='bg-danger text-white'>Please make sure you entered Latitude and Longitude fields, these fields are mandatory!Make sure radius catch area!</p>");
+    }
+  })
+});
