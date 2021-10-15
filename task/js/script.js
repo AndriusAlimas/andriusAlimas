@@ -5,3 +5,9 @@ $(window).on('load', function () {
    });
   }
 })
+
+
+// ajax call when pressed weather api button
+$("#weather_api").click(()=>{
+  alert("button clicked!");
+});
