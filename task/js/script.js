@@ -12,6 +12,10 @@ $("#weather_api").click(()=>{
     url: "php/getWeatherObservation.php",
     type: 'POST',
     dataType: 'json',
+    data: {
+      lat: $('#lat').val(),
+      lng: $('#lng').val()
+    },
     success: function(result){
       // for testing only to see result in console
       console.log(JSON.stringify(result));
@@ -23,7 +27,7 @@ $("#weather_api").click(()=>{
 
     error: function(jqXHR, textStatus, errorThrown) {
       // your error code
-      console.log("No");
+      $('#result').html("<p class='bg-danger text-white'>Please make sure you entered Latitude and Longitude fields, these fields are mandatory!</p>");
     }
   })
 });
