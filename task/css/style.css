@@ -4,6 +4,18 @@ header h1{
     margin: 15vh 5vw;
 }
 
+input[type='number']{
+    width: 15vw;
+    margin: 1vh auto;
+    display: inline;
+} 
+
+label{
+    margin: 2vw 2vh;
+}
+
+.impo
+
 #preloader{
     position: fixed;
     top: 0;
