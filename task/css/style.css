@@ -14,7 +14,9 @@ label{
     margin: 2vw 2vh;
 }
 
-.impo
+#place{
+    width: 30vw;
+}
 
 #preloader{
     position: fixed;

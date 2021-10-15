@@ -40,7 +40,21 @@
                             radius - search radius, only weather stations within this radius are considered. Default is about 100km.<hr>
                             <label for="lat">Latitude: </label><input id="lat" name="lat"type="number" placeholder="Latitude" class="form-control input-group-sm" > 
                             <label for="lng">Longitude: </label><input id="lng" name="lng" type="number" placeholder="Longitude" class="form-control input-group-sm" >
-                            <label for="radius">Radius: </label><input id="radius" name="radius" type="number" placeholder="Radius" class="form-control input-group-sm">
+                            <label for="radius">Radius: </label><input id="radius" name="radius" type="number" placeholder="Radius" class="form-control input-group-sm"><hr>
+                            <label for="place">Place Name: </label><input list="places" id="place" name="place" type="text"  class="form-control input-group-sm">
+
+                            <!-- data list that when you type will get some suggestions -->
+                            <datalist id="places">
+                                <option value="Wakefield"></option>
+                                <option value="London"></option>
+                                <option value="Paris"></option>
+                                <option value="Vilnius"></option>
+                                <option value="Berlin"></option>
+                                <option value="Moscow"></option>
+                                <option value="Beijing"></option>
+                                <option value="Tokyo"></option>
+                            </datalist>
+
                         </p>
                     </td>
                     <td><button  id="weather_api" class="btn btn-primary">Submit</button></td>
