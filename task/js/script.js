@@ -15,9 +15,9 @@ $("#weather_api").click(()=>{
     success: function(result){
       // for testing only to see result in console
       console.log(JSON.stringify(result));
-
+      console.log(result['data']['countryCode']);
       if (result.status.name == "ok") {
-        $("#result").html("<h1>Yes</h1>");
+       $('#result').html("<h1>" + result['data']['countryCode']+"</h1>");
       }
     },
 
