@@ -34,13 +34,12 @@
                 <tr>
                     <td scope="row">1. Weather Observation </td>
                     <td>Weather Station with most recent weather observation<hr>
-                        <p>
-                            <span class="important">Parameters: </span><br>
+                            Parameters: <br>
                             Latitude, Longitude - the service will return the station closest to this given point (reverse geocoding) <br>
-                            radius - search radius, only weather stations within this radius are considered. Default is about 100km.<hr>
+                            Radius - search radius, only weather stations within this radius are considered. Default is about 100km.<hr>
                             <label for="lat">Latitude: </label><input id="lat" name="lat"type="number" placeholder="Latitude" class="form-control input-group-sm" > 
                             <label for="lng">Longitude: </label><input id="lng" name="lng" type="number" placeholder="Longitude" class="form-control input-group-sm" >
-                            <label for="radius">Radius: </label><input id="radius" name="radius" type="number" placeholder="Radius" class="form-control input-group-sm"><hr>
+                            <label for="radius">Radius: </label><input id="radius" name="radius-w" type="number" placeholder="Radius" class="form-control input-group-sm"><hr>
                             <label for="place">Place Name: </label><input list="places" id="place" name="place" type="text"  class="form-control input-group-sm">
 
                             <!-- data list that when you type will get some suggestions -->
@@ -54,15 +53,23 @@
                                 <option value="Beijing"></option>
                                 <option value="Tokyo"></option>
                             </datalist>
-
-                        </p>
                     </td>
                     <td><button  id="weather_api" class="btn btn-primary">Submit</button></td>
                 </tr>
                 <tr>
-                    <td scope="row">2. &lt;name&gt;</td>
-                    <td>&lt;description&gt;</td>
-                    <td><button  class="btn btn-primary">Submit</button></td>
+                    <td scope="row">2. Timezone</td>
+                    <td>
+                        This API gives the local current time, sunrise local time (date) sunset local time (date), you can get as well country code<hr>
+                        Parameters: <br>
+                        Latitude, longitude<br>
+                        radius (buffer in km for closest timezone in coastal areas)<br>
+                        country name<br>
+                        date (date for sunrise/sunset)<hr>
+                            <label for="lat">Latitude: </label><input id="lat" name="lat"type="number" placeholder="Latitude" class="form-control input-group-sm" > 
+                            <label for="lng">Longitude: </label><input id="lng" name="lng" type="number" placeholder="Longitude" class="form-control input-group-sm" >
+                            <label for="radius">Radius: </label><input id="radius" name="radius" type="number" placeholder="Radius" class="form-control input-group-sm"><hr>
+                    </td>
+                    <td><button  id="timezone-api" class="btn btn-primary">Submit</button></td>
                 </tr>
                 <tr>
                     <td scope="row">3. &lt;name&gt;</td>
