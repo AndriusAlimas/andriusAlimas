@@ -20,35 +20,8 @@ $("#weather_api").click(()=>{
     },
     success: function(result){
       if (result.status.name == "ok") {
-       $('#result').html("<table class='table table-bordered table-info'><caption class='bg-success text-black display-6'>"+ $('#api_name').text()+"</caption>"+
-                            "<thead class='text-success'>" +
-                              "<tr>" +
-                                "<th>Date Time</th>" + 
-                                "<th>Station Name</th>" + 
-                                "<th>Country Code</th>" + 
-                                "<th>Temperature</th>" + 
-                                "<th>Clouds</th>" + 
-                                "<th>Wind Direction</th>" + 
-                                "<th>Wind Speed</th>" + 
-                                "<th>Humidity</th>" + 
-                                "<th>Weather Condition</th>" + 
-                                "</tr>" + 
-                            "</thead>" +
-                            "<tbody>" +
-                                "<tr>" +
-                                  "<td>"+result['data']['datetime'] +"</td>"+
-                                  "<td>"+result['data']['stationName'] +"</td>"+
-                                  "<td>"+result['data']['countryCode'] +"</td>"+
-                                  "<td>"+result['data']['temperature'] +"</td>"+
-                                  "<td>"+result['data']['clouds'] +"</td>"+
-                                  "<td>"+result['data']['windDirection'] +"</td>"+
-                                  "<td>"+result['data']['windSpeed'] +"</td>"+
-                                  "<td>"+result['data']['humidity'] +"</td>"+
-                                  "<td>"+result['data']['weatherCondition'] +"</td>"+
-                                "</tr>"+
-                            "</tbody>"+
-                          "</table>"
-       );
+        obj =  result['data'];
+        drawResults(obj);
       }
     },
     error: function(jqXHR, textStatus, errorThrown) {
@@ -80,3 +53,14 @@ $("#place").change(()=>{
     }
   })
 });
+
+// FUNCTIONS
+const drawResults = (obj) =>{
+   // erase prev
+   $('#result').html('');
+   
+  // draw all key and values pairs in received object
+  $.each(obj,(key,value)=>{
+     $('#result').append("<p>"+ key + " : " + value + "</p>");
+  })
+}
