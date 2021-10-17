@@ -20,8 +20,9 @@ $("#weather_api").click(()=>{
     },
     success: function(result){
       if (result.status.name == "ok") {
+        $('#result').html('');
         obj =  result['data'];
-        drawResults(obj,true);
+        drawResults(obj);
       }
     },
     error: function(jqXHR, textStatus, errorThrown) {
@@ -48,8 +49,9 @@ $("#timezone-api").click(()=>{
     },
     success: function(result){
       if (result.status.name == "ok") {
+        $('#result').html('');
         obj =  result['data'];
-        drawResults(obj,true);
+        drawResults(obj);
         // get date object
         date_object = obj['dates'][0];
         $.each(date_object,(key,value)=>{
@@ -78,12 +80,11 @@ $("#wikipedia_api").click(()=>{
     },
     success: function(result){
       if (result.status.name == "ok") {
+        $('#result').html('');
         obj =  result['data'];
-
         for(let i = 0; i < obj.length; i++){
-          drawResults(obj[i],false);
+          drawResults(obj[i]);
         }
-        
       }
     },
     error: function(jqXHR, textStatus, errorThrown) {
@@ -141,17 +142,15 @@ $("#timezone_place").change(()=>{
 });
 
 // FUNCTIONS
-const drawResults = (obj,erase) =>{
-   // if erase is true erase everything and start fresh
-   if(erase){
-    $('#result').html('');
-   }
-   
+const drawResults = (obj) =>{
+
   // draw all key and values pairs in received object
-  $.each(obj,(key,value)=>{
+  $.each(obj,(key,value,i)=>{
      if(key ==='thumbnailImg'){
-      $('#result').append(`<img class= "thumbnailImg" width="200px" src=""/>`);
-      $('.thumbnailImg').attr('src',value);
+      $('#result').append(`<img id="img" width="200px" src=""/>`);
+      $('#img').attr('src',value);
+      let img = "img" + i;
+      $('#img').attr('id', img);
      }else{
       $('#result').append("<p>"+ key + " : " + value + "</p>");
      }
