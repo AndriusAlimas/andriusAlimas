@@ -32,15 +32,16 @@
             </thead>
             <tbody>
                 <tr>
-                    <td scope="row">1. <span id="api_name">Weather Observation</span> </td>
+                    <form action="javascript:void(0);">
+                        <td scope="row">1. <span class="api_weather">Weather Observation</span> </td>
                     <td>Weather Station with most recent weather observation<hr>
                             Parameters: <br>
                             Latitude, Longitude - the service will return the station closest to this given point (reverse geocoding) <br>
                             Radius - search radius, only weather stations within this radius are considered. Default is about 100km.<hr>
-                                <label for="weather_lat">Latitude: </label><input id="weather_lat" name="lat"type="number" placeholder="Latitude" class="form-control input-group-sm" > 
-                                <label for="weather_lng">Longitude: </label><input id="weather_lng" name="lng" type="number" placeholder="Longitude" class="form-control input-group-sm" >
-                                <label for="weather_radius">Radius: </label><input id="weather_radius" name="radius" type="number" placeholder="Radius" class="form-control input-group-sm"><hr>
-                                <label for="place">Place Name: </label><input list="places" id="place" name="place" type="text"  class="form-control input-group-sm">
+                                <label for="weather_lat">Latitude: <input step="any" required id="weather_lat" name="lat"type="number" placeholder="Latitude" class="form-control input-group-sm" ></label> 
+                                <label for="weather_lng">Longitude: <input step="any" required id="weather_lng" name="lng" type="number" placeholder="Longitude" class="form-control input-group-sm" ></label>
+                                <label for="weather_radius">Radius: <input id="weather_radius" name="radius" type="number" placeholder="Radius" class="form-control input-group-sm"></label><hr>
+                                <label for="weather_place">Place Name: <input list="places" id="weather_place" name="place" type="text"  class="form-control input-group-sm"></label>
 
                             <!-- data list that when you type will get some suggestions -->
                             <datalist id="places">
@@ -55,21 +56,38 @@
                             </datalist>
                     </td>
                     <td><button  id="weather_api" class="btn btn-primary">Submit</button></td>
+
+                    </form>
                 </tr>
                 <tr>
-                    <td scope="row">2. Timezone</td>
+                  <form action="javascript:void(0);">
+                    <td scope="row">2. <span class="api_timezone">Timezone</span> </td>
                     <td>
                         This API gives the local current time, sunrise local time (date) sunset local time (date), you can get as well country code<hr>
                         Parameters: <br>
-                        Latitude, longitude<br>
-                        radius (buffer in km for closest timezone in coastal areas)<br>
-                        country name<br>
+                        Latitude, Longitude<br>
+                        Radius (buffer in km for closest timezone in coastal areas)<br>
+                        Language( Country name)<br>
                         date (date for sunrise/sunset)<hr>
-                            <label for="timezone_lat">Latitude: </label><input id="timezone_lat" name="lat"type="number" placeholder="Latitude" class="form-control input-group-sm" > 
-                            <label for="timezone_lng">Longitude: </label><input id="timezone_lng" name="lng" type="number" placeholder="Longitude" class="form-control input-group-sm" >
-                            <label for="timezone_radius">Radius: </label><input id="timezone_radius" name="radius" type="number" placeholder="Radius" class="form-control input-group-sm"><hr>
+                            <label for="timezone_lat">Latitude: <input step="any" required id="timezone_lat" name="lat"type="number" placeholder="Latitude" class="form-control input-group-sm" > </label>
+                            <label for="timezone_lng">Longitude: <input step="any" required id="timezone_lng" name="lng" type="number" placeholder="Longitude" class="form-control input-group-sm" ></label>
+                            <label for="timezone_radius">Radius: <input id="timezone_radius" name="radius" type="number" placeholder="Radius" class="form-control input-group-sm"></label>
+                            <label for="language">Language: <input disabled list="languages" id="lang" name="lang" placeholder="Language" type="text" class="form-control input-group-sm"></label>
+                            <label for="timezone_date">Date: <input required pattern="\d{4}-\d{2}-\d{2}" id="timezone_date" type="date" ></label><hr>
+                            <label for="timezone_place">Place Name: <input list="places" id="timezone_place"  name="place" type="text"  class="form-control input-group-sm"></label>
+
+                              <!-- data list that when you type will get some suggestions -->
+                              <datalist id="languages">
+                                <option value="RU">Russian</option>
+                                <option value="EN">English</option>
+                                <option value="LT">Lithuanian</option>
+                                <option value="EE">Estonia</option>
+                                <option value="DE">German</option>
+                                <option value="PL">Polish</option>
+                            </datalist>
                     </td>
                     <td><button  id="timezone-api" class="btn btn-primary">Submit</button></td>
+                  </form>
                 </tr>
                 <tr>
                     <td scope="row">3. &lt;name&gt;</td>
