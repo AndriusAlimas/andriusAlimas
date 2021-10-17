@@ -9,7 +9,7 @@ $(window).on('load', function () {
 // ajax call when pressed weather api button
 $("#weather_api").click(()=>{
   $.ajax({
-    url: "php/getWeatherObservation.php",
+    url: "php/getApi.php",
     type: 'POST',
     dataType: 'json',
     data: {
@@ -61,11 +61,12 @@ $("#weather_api").click(()=>{
 // ajax call when you type in text places input field
 $("#place").change(()=>{
   $.ajax({
-    url: "php/getPosition.php",
+    url: "php/getApi.php",
     type: 'POST',
     dataType: 'json',
     data: {
-      place: $('#place').val()
+      place: $('#place').val(),
+      "api_name": 'locations'
     },
     success: function(result){
       if (result.status.name == "ok") {
