@@ -15,13 +15,12 @@ $("#weather_api").click(()=>{
     data: {
       lat: $('#weather_lat').val(),
       lng: $('#weather_lng').val(),
-      radius: $('#weather_radius').val()
+      radius: $('#weather_radius').val(),
+      "api_name": $('#api_name').text()
     },
     success: function(result){
-      // for testing only to see result in console
-      // console.log(JSON.stringify(result));
       if (result.status.name == "ok") {
-       $('#result').html("<table class='table table-bordered table-info'><caption class='bg-success text-black display-6'>Weather Observation</caption>"+
+       $('#result').html("<table class='table table-bordered table-info'><caption class='bg-success text-black display-6'>"+ $('#api_name').text()+"</caption>"+
                             "<thead class='text-success'>" +
                               "<tr>" +
                                 "<th>Date Time</th>" + 
@@ -69,10 +68,7 @@ $("#place").change(()=>{
       place: $('#place').val()
     },
     success: function(result){
-      // for testing only to see result in console
-      // console.log(JSON.stringify(result));
       if (result.status.name == "ok") {
-         console.log(result.data[0].referencePosition);
         $('#weather_lat').val(result.data[0].referencePosition.latitude);
         $('#weather_lng').val(result.data[0].referencePosition.longitude);
       }
