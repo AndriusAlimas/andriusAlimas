@@ -13,15 +13,15 @@ $("#weather_api").click(()=>{
     type: 'POST',
     dataType: 'json',
     data: {
-      lat: $('#lat').val(),
-      lng: $('#lng').val(),
-      radius: $('#radius').val()
+      lat: $('#weather_lat').val(),
+      lng: $('#weather_lng').val(),
+      radius: $('#weather_radius').val()
     },
     success: function(result){
       // for testing only to see result in console
       // console.log(JSON.stringify(result));
       if (result.status.name == "ok") {
-       $('#result').html("<table class='table table-bordered table-info'><caption>Results</caption>"+
+       $('#result').html("<table class='table table-bordered table-info'><caption class='bg-success text-black display-6'>Weather Observation</caption>"+
                             "<thead class='text-success'>" +
                               "<tr>" +
                                 "<th>Date Time</th>" + 
@@ -73,8 +73,8 @@ $("#place").change(()=>{
       // console.log(JSON.stringify(result));
       if (result.status.name == "ok") {
          console.log(result.data[0].referencePosition);
-        $('#lat').val(result.data[0].referencePosition.latitude);
-        $('#lng').val(result.data[0].referencePosition.longitude);
+        $('#weather_lat').val(result.data[0].referencePosition.latitude);
+        $('#weather_lng').val(result.data[0].referencePosition.longitude);
       }
     },
     error: function(jqXHR, textStatus, errorThrown) {
