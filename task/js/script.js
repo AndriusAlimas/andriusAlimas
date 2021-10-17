@@ -21,7 +21,7 @@ $("#weather_api").click(()=>{
     success: function(result){
       if (result.status.name == "ok") {
         obj =  result['data'];
-        drawResults(obj);
+        drawResults(obj,true);
       }
     },
     error: function(jqXHR, textStatus, errorThrown) {
@@ -34,7 +34,6 @@ $("#weather_api").click(()=>{
 // ajax call when pressed timezone api button
 $("#timezone-api").click(()=>{
   let date = $('#timezone_date').val().toString();
-  console.log(typeof date);
   $.ajax({
     url: "php/getApi.php",
     type: 'POST',
@@ -50,7 +49,7 @@ $("#timezone-api").click(()=>{
     success: function(result){
       if (result.status.name == "ok") {
         obj =  result['data'];
-        drawResults(obj);
+        drawResults(obj,true);
         // get date object
         date_object = obj['dates'][0];
         $.each(date_object,(key,value)=>{
@@ -65,6 +64,34 @@ $("#timezone-api").click(()=>{
   })
 });
 
+
+// ajax call when pressed wikipedia api button
+$("#wikipedia_api").click(()=>{
+  $.ajax({
+    url: "php/getApi.php",
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      // lang: $('#lang').val(),
+      q: $('#wiki_place').val(),
+      "api_name":'geonames'
+    },
+    success: function(result){
+      if (result.status.name == "ok") {
+        obj =  result['data'];
+
+        for(let i = 0; i < obj.length; i++){
+          drawResults(obj[i],false);
+        }
+        
+      }
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+      // your error code
+      $('#result').html("<p class='bg-danger text-white'>Please make sure you entered Latitude and Longitude fields, these fields are mandatory!Make sure radius catch area!</p>");
+    }
+  })
+});
 
 // ajax call when you type in text places input field weather
 $("#weather_place").change(()=>{
@@ -114,12 +141,20 @@ $("#timezone_place").change(()=>{
 });
 
 // FUNCTIONS
-const drawResults = (obj) =>{
-   // erase prev
-   $('#result').html('');
+const drawResults = (obj,erase) =>{
+   // if erase is true erase everything and start fresh
+   if(erase){
+    $('#result').html('');
+   }
    
   // draw all key and values pairs in received object
   $.each(obj,(key,value)=>{
-     $('#result').append("<p>"+ key + " : " + value + "</p>");
+     if(key ==='thumbnailImg'){
+      $('#result').append(`<img class= "thumbnailImg" width="200px" src=""/>`);
+      $('.thumbnailImg').attr('src',value);
+     }else{
+      $('#result').append("<p>"+ key + " : " + value + "</p>");
+     }
+  
   })
 }
