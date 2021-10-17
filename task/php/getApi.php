@@ -4,9 +4,17 @@
     error_reporting(E_ALL);
 
     $executionStartTime = microtime(true);
-
-    $url='http://api.geonames.org/findNearByWeatherJSON?lat='.$_REQUEST['lat']. '&lng='.$_REQUEST['lng'].'&radius='.$_REQUEST['radius'].'&username=andriusAlimas';
-  
+    $api = dashesToCamelCase($_REQUEST['api_name']);
+    
+    switch($api){
+        case 'weatherObservation': 
+            $url='http://api.geonames.org/findNearByWeatherJSON?lat='.$_REQUEST['lat']. '&lng='.$_REQUEST['lng'].'&radius='.$_REQUEST['radius'].'&username=andriusAlimas';
+        break;
+        case 'locations':
+        $url='https://api.myptv.com/geocoding/v1/locations/by-text?searchText='.$_REQUEST['place'].'&apiKey=YzJkYmU4NTkwOTViNGVkZmJmYmZiMGRjZmJkZmIxMmU6M2QwZTYyMjgtMzMzNy00N2M3LWEwZDEtNzIwYzE0ZmYxZWY2';
+        break;
+    }
+    
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -16,13 +24,12 @@
     
     curl_close($ch);
 
-    
     $decode = json_decode($result,true);    
     $output['status']['code'] = "200";
     $output['status']['name'] = "ok";
     $output['status']['description'] = "success";
     $output['status']['returnedIn'] = intval((microtime(true) - $executionStartTime) * 1000) . " ms";
-    $output['data'] = $decode[dashesToCamelCase($_REQUEST['api_name'])];
+    $output['data'] = $decode[$api];
     
     header('Content-Type: application/json; charset=UTF-8');
 
