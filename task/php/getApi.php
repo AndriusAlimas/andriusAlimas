@@ -1,5 +1,5 @@
 <?php
-
+    $show = true; // just variable to check formating
     ini_set('display_errors', 'On');
     error_reporting(E_ALL);
 
@@ -13,6 +13,11 @@
         case 'locations':
         $url='https://api.myptv.com/geocoding/v1/locations/by-text?searchText='.$_REQUEST['place'].'&apiKey=YzJkYmU4NTkwOTViNGVkZmJmYmZiMGRjZmJkZmIxMmU6M2QwZTYyMjgtMzMzNy00N2M3LWEwZDEtNzIwYzE0ZmYxZWY2';
         break;
+
+        default:
+            $show = false; // different format change to false
+            $url = 'http://api.geonames.org/timezoneJSON?lat='.$_REQUEST['lat'].'&lng='.$_REQUEST['lng'].'&lang='.$_REQUEST['lang'].'&date='.$_REQUEST['date'].'&username=andriusAlimas';
+        break;
     }
     
     $ch = curl_init();
@@ -23,13 +28,19 @@
     $result=curl_exec($ch);
     
     curl_close($ch);
-
+ 
     $decode = json_decode($result,true);    
     $output['status']['code'] = "200";
     $output['status']['name'] = "ok";
     $output['status']['description'] = "success";
     $output['status']['returnedIn'] = intval((microtime(true) - $executionStartTime) * 1000) . " ms";
-    $output['data'] = $decode[$api];
+    
+    // because some decode is different we need to make sure its right format
+    if($show === true){
+        $output['data'] = $decode[$api];
+    }else{
+        $output['data'] = $decode;
+    }
     
     header('Content-Type: application/json; charset=UTF-8');
 
