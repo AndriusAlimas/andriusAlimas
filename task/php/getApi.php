@@ -9,11 +9,13 @@
     switch($api){
         case 'weatherObservation': 
             $url='http://api.geonames.org/findNearByWeatherJSON?lat='.$_REQUEST['lat']. '&lng='.$_REQUEST['lng'].'&radius='.$_REQUEST['radius'].'&username=andriusAlimas';
-        break;
+            break;
         case 'locations':
-        $url='https://api.myptv.com/geocoding/v1/locations/by-text?searchText='.$_REQUEST['place'].'&apiKey=YzJkYmU4NTkwOTViNGVkZmJmYmZiMGRjZmJkZmIxMmU6M2QwZTYyMjgtMzMzNy00N2M3LWEwZDEtNzIwYzE0ZmYxZWY2';
-        break;
-
+            $url='https://api.myptv.com/geocoding/v1/locations/by-text?searchText='.$_REQUEST['place'].'&apiKey=YzJkYmU4NTkwOTViNGVkZmJmYmZiMGRjZmJkZmIxMmU6M2QwZTYyMjgtMzMzNy00N2M3LWEwZDEtNzIwYzE0ZmYxZWY2';
+            break;
+        case 'geonames' :
+            $url='http://api.geonames.org/wikipediaSearchJSON?q=london&username=andriusAlimas';
+            break;
         default:
             $show = false; // different format change to false
             $url = 'http://api.geonames.org/timezoneJSON?lat='.$_REQUEST['lat'].'&lng='.$_REQUEST['lng'].'&lang='.$_REQUEST['lang'].'&date='.$_REQUEST['date'].'&username=andriusAlimas';
