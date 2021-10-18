@@ -69,7 +69,6 @@ $("#timezone-api").click(()=>{
   })
 });
 
-
 // Wikipedia Api button clicked
 $("#wikipedia_api").click(()=>{
   $.ajax({
@@ -79,6 +78,7 @@ $("#wikipedia_api").click(()=>{
     data: {
       lang: $('#wiki_lang').val(),
       title : $('#wiki_title').val(),
+      maxRows: $('#wiki_maxRow').val(),
       q: $('#wiki_place').val(),
       "api_name":'geonames'
     },
