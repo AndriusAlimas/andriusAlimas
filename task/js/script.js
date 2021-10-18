@@ -6,7 +6,9 @@ $(window).on('load', function () {
   }
 })
 
-// ajax call when pressed weather api button
+// AJAX CALLS
+
+// Weather Api button clicked:
 $("#weather_api").click(()=>{
   $.ajax({
     url: "php/getApi.php",
@@ -32,7 +34,7 @@ $("#weather_api").click(()=>{
   })
 });
 
-// ajax call when pressed timezone api button
+// Time Zone Api button clicked:
 $("#timezone-api").click(()=>{
   let date = $('#timezone_date').val().toString();
   $.ajax({
@@ -67,7 +69,7 @@ $("#timezone-api").click(()=>{
 });
 
 
-// ajax call when pressed wikipedia api button
+// Wikipedia Api button clicked
 $("#wikipedia_api").click(()=>{
   $.ajax({
     url: "php/getApi.php",
@@ -94,7 +96,7 @@ $("#wikipedia_api").click(()=>{
   })
 });
 
-// ajax call when you type in text places input field weather
+// Weather API place text field change:
 $("#weather_place").change(()=>{
   $.ajax({
     url: "php/getApi.php",
@@ -117,7 +119,7 @@ $("#weather_place").change(()=>{
   })
 });
 
-// ajax call when you type in text places input field timezone
+// Time API place text field change:
 $("#timezone_place").change(()=>{
   $.ajax({
     url: "php/getApi.php",
@@ -143,7 +145,6 @@ $("#timezone_place").change(()=>{
 
 // FUNCTIONS
 const drawResults = (obj) =>{
-
   // draw all key and values pairs in received object
   $.each(obj,(key,value,i)=>{
      if(key ==='thumbnailImg'){
@@ -154,6 +155,5 @@ const drawResults = (obj) =>{
      }else{
       $('#result').append("<p>"+ key + " : " + value + "</p>");
      }
-  
   })
 }
