@@ -29,7 +29,7 @@ $("#weather_api").click(()=>{
     },
     error: function(jqXHR, textStatus, errorThrown) {
       // your error code
-      $('#result').html("<p class='bg-danger text-white'>Please make sure you entered Latitude and Longitude fields, these fields are mandatory!Make sure radius catch area!</p>");
+      $('#result').html("<p class='bg-danger text-white'>Make sure latitude and longitude catch within radius catch weather station, you can always use place name to help you</p>");
     }
   })
 });
@@ -56,6 +56,7 @@ $("#timezone-api").click(()=>{
         drawResults(obj);
         // get date object
         date_object = obj['dates'][0];
+        // extra info about dates
         $.each(date_object,(key,value)=>{
           $('#result').append("<p>"+ key + " : " + value + "</p>");
        })
@@ -63,7 +64,7 @@ $("#timezone-api").click(()=>{
     },
     error: function(jqXHR, textStatus, errorThrown) {
       // your error code
-      $('#result').html("<p class='bg-danger text-white'>Please make sure you entered Latitude and Longitude fields, these fields are mandatory!Make sure radius catch area!</p>");
+      $('#result').html("<p class='bg-danger text-white'>Somethings goes wrong please check entered values, you can always use place name field if you not sure </p>");
     }
   })
 });
@@ -91,7 +92,7 @@ $("#wikipedia_api").click(()=>{
     },
     error: function(jqXHR, textStatus, errorThrown) {
       // your error code
-      $('#result').html("<p class='bg-danger text-white'>Please make sure you entered Latitude and Longitude fields, these fields are mandatory!Make sure radius catch area!</p>");
+      $('#result').html("<p class='bg-danger text-white'>Something went wrong, you can always use place name on list otherwise be sure you entered correct place </p>");
     }
   })
 });
@@ -114,7 +115,7 @@ $("#weather_place").change(()=>{
     },
     error: function(jqXHR, textStatus, errorThrown) {
       // your error code
-      $('#result').html("<p class='bg-danger text-white'>Please make sure you entered Latitude and Longitude fields, these fields are mandatory!Make sure radius catch area!</p>");
+      $('#result').html("<p class='bg-danger text-white'>Something went wrong :" + textStatus + "</p>");
     }
   })
 });
@@ -138,7 +139,7 @@ $("#timezone_place").change(()=>{
     },
     error: function(jqXHR, textStatus, errorThrown) {
       // your error code
-      $('#result').html("<p class='bg-danger text-white'>Please make sure you entered Latitude and Longitude fields, these fields are mandatory!Make sure radius catch area!</p>");
+      $('#result').html("<p class='bg-danger text-white'>Something went wrong :" + textStatus + "</p>");
     }
   })
 });
