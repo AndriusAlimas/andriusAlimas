@@ -77,7 +77,7 @@ $("#wikipedia_api").click(()=>{
     type: 'POST',
     dataType: 'json',
     data: {
-      // lang: $('#lang').val(),
+      lang: $('#wiki_lang').val(),
       title : $('#wiki_title').val(),
       q: $('#wiki_place').val(),
       "api_name":'geonames'

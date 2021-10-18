@@ -14,7 +14,7 @@
             $url='https://api.myptv.com/geocoding/v1/locations/by-text?searchText='.$_REQUEST['place'].'&apiKey=YzJkYmU4NTkwOTViNGVkZmJmYmZiMGRjZmJkZmIxMmU6M2QwZTYyMjgtMzMzNy00N2M3LWEwZDEtNzIwYzE0ZmYxZWY2';
             break;
         case 'geonames' :
-            $url='http://api.geonames.org/wikipediaSearchJSON?q='.$_REQUEST['q'].'&title='.$_REQUEST['title'].'&username=andriusAlimas';
+            $url='http://api.geonames.org/wikipediaSearchJSON?q='.$_REQUEST['q'].'&title='.$_REQUEST['title'].'&lang='.$_REQUEST['lang'].'&username=andriusAlimas';
             break;
         default:
             $show = false; // different format change to false
