@@ -23,6 +23,7 @@
     <!-- Main section -->
     <main>
         <table class="table table-hover">
+            <!-- table head section -->
             <thead>
                 <tr>
                     <th>API name</th>
@@ -30,11 +31,13 @@
                     <th>&nbsp;</th>
                 </tr>
             </thead>
+            <!-- table main body section -->
             <tbody>
+                <!-- WEATHER API  -->
                 <tr>
                     <form action="javascript:void(0);">
                         <td scope="row">1. <span class="api_weather">Weather Observation</span> </td>
-                    <td>Weather Station with most recent weather observation<hr>
+                        <td>Weather Station with most recent weather observation<hr>
                             Parameters: <br>
                             Latitude, Longitude - the service will return the station closest to this given point (reverse geocoding) <br>
                             Radius - search radius, only weather stations within this radius are considered. Default is about 100km.<hr>
@@ -42,11 +45,13 @@
                                 <label for="weather_lng">Longitude: <input step="any" required id="weather_lng" name="lng" type="number" placeholder="Longitude" class="form-control input-group-sm" ></label>
                                 <label for="weather_radius">Radius: <input id="weather_radius" name="radius" type="number" placeholder="Radius" class="form-control input-group-sm"></label><hr>
                                 <label for="weather_place">Place Name: <input list="places" id="weather_place" name="place" type="text"  class="form-control input-group-sm"></label>
-                    </td>
-                    <td><button  id="weather_api" class="btn btn-primary">Submit</button></td>
-
+                        </td>
+                        <td>
+                            <button  id="weather_api" class="btn btn-primary">Submit</button>
+                        </td>
                     </form>
                 </tr>
+                <!-- TIMEZONE API -->
                 <tr>
                   <form action="javascript:void(0);">
                     <td scope="row">2. <span class="api_timezone">Timezone</span> </td>
@@ -64,9 +69,12 @@
                             <label for="timezone_date">Date: <input required pattern="\d{4}-\d{2}-\d{2}" id="timezone_date" type="date" ></label><hr>
                             <label for="timezone_place">Place Name: <input list="places" id="timezone_place"  name="place" type="text"  class="form-control input-group-sm"></label>
                     </td>
-                    <td><button  id="timezone-api" class="btn btn-primary">Submit</button></td>
+                    <td>
+                        <button  id="timezone-api" class="btn btn-primary">Submit</button>
+                    </td>
                   </form>
                 </tr>
+                <!-- WIKIPEDIA API -->
                 <tr>
                     <form action="javascript:void(0);">
                         <td scope="row">3. <span class="api_wiki">Wikipedia Search</span></td>
@@ -79,11 +87,14 @@
                             Max Row : maximal number of rows returned (default = 10)<hr>
                             <label for="wiki_place">Place Name: <input required list="places" id="wiki_place"  name="q" type="text"  class="form-control input-group-sm"></label>
                             <label for="wiki_title">Title: <input id="wiki_title"  name="title" type="text"  class="form-control input-group-sm"></label>
-                            <label for="language">Language: <input disabled list="languages" id="lang" name="lang" placeholder="Language" type="text" class="form-control input-group-sm"></label>
+                            <label for="wiki_lang">Language: <input disabled list="languages" id="wiki_lang" name="lang" placeholder="Language" type="text" class="form-control input-group-sm"></label>
                         </td>
-                        <td><button id="wikipedia_api"  class="btn btn-primary">Submit</button></td>
+                        <td>
+                            <button id="wikipedia_api"  class="btn btn-primary">Submit</button>
+                        </td>
                     </form> 
                 </tr>
+                <!-- RESULTS -->
                 <tr>
                     <td id="result" colspan="3" scope="row">Results</td>
                 </tr>
@@ -91,6 +102,7 @@
         </table>
     </main>
 
+    <!-- Preloader animation place -->
     <div id="preloader"></div>
 
       <!-- data list that when you type will get some suggestions -->
@@ -102,7 +114,7 @@
         <option value="DE">German</option>
         <option value="PL">Polish</option>
     </datalist>
-    
+
      <datalist id="places">
         <option value="Wakefield"></option>
         <option value="London"></option>
@@ -113,6 +125,7 @@
         <option value="Beijing"></option>
         <option value="Tokyo"></option>
     </datalist>
+
    <!-- upload javascript files -->
    <script src="vendors/jquery/jquery.min.js"></script>
    <script src="vendors/bootstrap/bootstrap.min.js"></script>
