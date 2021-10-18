@@ -43,7 +43,7 @@
                             Radius - search radius, only weather stations within this radius are considered. Default is about 100km.<hr>
                                 <label for="weather_lat">Latitude: <input step="any" required id="weather_lat" name="lat"type="number" placeholder="Latitude" class="form-control input-group-sm" ></label> 
                                 <label for="weather_lng">Longitude: <input step="any" required id="weather_lng" name="lng" type="number" placeholder="Longitude" class="form-control input-group-sm" ></label>
-                                <label for="weather_radius">Radius: <input id="weather_radius" name="radius" type="number" placeholder="Radius" class="form-control input-group-sm"></label><hr>
+                                <label for="weather_radius">Radius: <input id="weather_radius" name="radius" type="number" step="1" placeholder="100" class="form-control input-group-sm"></label><hr>
                                 <label for="weather_place">Place Name: <input list="places" id="weather_place" name="place" type="text"  class="form-control input-group-sm"></label>
                         </td>
                         <td>
@@ -64,8 +64,8 @@
                         date (date for sunrise/sunset)<hr>
                             <label for="timezone_lat">Latitude: <input step="any" required id="timezone_lat" name="lat"type="number" placeholder="Latitude" class="form-control input-group-sm" > </label>
                             <label for="timezone_lng">Longitude: <input step="any" required id="timezone_lng" name="lng" type="number" placeholder="Longitude" class="form-control input-group-sm" ></label>
-                            <label for="timezone_radius">Radius: <input id="timezone_radius" name="radius" type="number" placeholder="Radius" class="form-control input-group-sm"></label>
-                            <label for="timezone_lang">Language: <input disabled list="languages" id="timezone_lang" name="lang" placeholder="Language" type="text" class="form-control input-group-sm"></label>
+                            <label for="timezone_radius">Radius: <input step ="1" id="timezone_radius" name="radius" type="number" placeholder="100" class="form-control input-group-sm"></label>
+                            <label for="timezone_lang">Language: <input disabled list="languages" id="timezone_lang" name="lang" placeholder="EN" type="text" class="form-control input-group-sm"></label>
                             <label for="timezone_date">Date: <input required pattern="\d{4}-\d{2}-\d{2}" id="timezone_date" type="date" ></label><hr>
                             <label for="timezone_place">Place Name: <input list="places" id="timezone_place"  name="place" type="text"  class="form-control input-group-sm"></label>
                     </td>
@@ -87,7 +87,8 @@
                             Max Row : maximal number of rows returned (default = 10)<hr>
                             <label for="wiki_place">Place Name: <input required list="places" id="wiki_place"  name="q" type="text"  class="form-control input-group-sm"></label>
                             <label for="wiki_title">Title: <input id="wiki_title"  name="title" type="text"  class="form-control input-group-sm"></label>
-                            <label for="wiki_lang">Language: <input list="languages" id="wiki_lang" name="lang" placeholder="Language" type="text" class="form-control input-group-sm"></label>
+                            <label for="wiki_lang">Language: <input list="languages" id="wiki_lang" name="lang" placeholder="EN" type="text" class="form-control input-group-sm"></label>
+                            <label for="wiki_maxRow">Max Row: <input step="1" id="wiki_maxRow" name="maxRows"type="number" placeholder="10" class="form-control input-group-sm" ></label>
                         </td>
                         <td>
                             <button id="wikipedia_api"  class="btn btn-primary">Submit</button>
