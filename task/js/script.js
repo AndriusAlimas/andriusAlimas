@@ -42,7 +42,7 @@ $("#timezone-api").click(()=>{
     type: 'POST',
     dataType: 'json',
     data: {
-      lang: $('#lang').val(),
+      lang: $('#timezone_lang').val(),
       lat: $('#timezone_lat').val(),
       lng: $('#timezone_lng').val(),
       radius: $('#timezone_radius').val(),
@@ -135,7 +135,7 @@ $("#timezone_place").change(()=>{
       if (result.status.name == "ok") {
         $('#timezone_lat').val(result.data[0].referencePosition.latitude);
         $('#timezone_lng').val(result.data[0].referencePosition.longitude);
-        $('#lang').prop("disabled", false);
+        $('#timezone_lang').prop("disabled", false);
       }
     },
     error: function(jqXHR, textStatus, errorThrown) {

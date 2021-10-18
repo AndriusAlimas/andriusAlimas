@@ -42,18 +42,6 @@
                                 <label for="weather_lng">Longitude: <input step="any" required id="weather_lng" name="lng" type="number" placeholder="Longitude" class="form-control input-group-sm" ></label>
                                 <label for="weather_radius">Radius: <input id="weather_radius" name="radius" type="number" placeholder="Radius" class="form-control input-group-sm"></label><hr>
                                 <label for="weather_place">Place Name: <input list="places" id="weather_place" name="place" type="text"  class="form-control input-group-sm"></label>
-
-                            <!-- data list that when you type will get some suggestions -->
-                            <datalist id="places">
-                                <option value="Wakefield"></option>
-                                <option value="London"></option>
-                                <option value="Paris"></option>
-                                <option value="Vilnius"></option>
-                                <option value="Berlin"></option>
-                                <option value="Moscow"></option>
-                                <option value="Beijing"></option>
-                                <option value="Tokyo"></option>
-                            </datalist>
                     </td>
                     <td><button  id="weather_api" class="btn btn-primary">Submit</button></td>
 
@@ -72,19 +60,9 @@
                             <label for="timezone_lat">Latitude: <input step="any" required id="timezone_lat" name="lat"type="number" placeholder="Latitude" class="form-control input-group-sm" > </label>
                             <label for="timezone_lng">Longitude: <input step="any" required id="timezone_lng" name="lng" type="number" placeholder="Longitude" class="form-control input-group-sm" ></label>
                             <label for="timezone_radius">Radius: <input id="timezone_radius" name="radius" type="number" placeholder="Radius" class="form-control input-group-sm"></label>
-                            <label for="language">Language: <input disabled list="languages" id="lang" name="lang" placeholder="Language" type="text" class="form-control input-group-sm"></label>
+                            <label for="timezone_lang">Language: <input disabled list="languages" id="timezone_lang" name="lang" placeholder="Language" type="text" class="form-control input-group-sm"></label>
                             <label for="timezone_date">Date: <input required pattern="\d{4}-\d{2}-\d{2}" id="timezone_date" type="date" ></label><hr>
                             <label for="timezone_place">Place Name: <input list="places" id="timezone_place"  name="place" type="text"  class="form-control input-group-sm"></label>
-
-                              <!-- data list that when you type will get some suggestions -->
-                              <datalist id="languages">
-                                <option value="RU">Russian</option>
-                                <option value="EN">English</option>
-                                <option value="LT">Lithuanian</option>
-                                <option value="EE">Estonia</option>
-                                <option value="DE">German</option>
-                                <option value="PL">Polish</option>
-                            </datalist>
                     </td>
                     <td><button  id="timezone-api" class="btn btn-primary">Submit</button></td>
                   </form>
@@ -101,7 +79,7 @@
                             Max Row : maximal number of rows returned (default = 10)<hr>
                             <label for="wiki_place">Place Name: <input required list="places" id="wiki_place"  name="q" type="text"  class="form-control input-group-sm"></label>
                             <label for="wiki_title">Title: <input id="wiki_title"  name="title" type="text"  class="form-control input-group-sm"></label>
-
+                            <label for="language">Language: <input disabled list="languages" id="lang" name="lang" placeholder="Language" type="text" class="form-control input-group-sm"></label>
                         </td>
                         <td><button id="wikipedia_api"  class="btn btn-primary">Submit</button></td>
                     </form> 
@@ -115,6 +93,26 @@
 
     <div id="preloader"></div>
 
+      <!-- data list that when you type will get some suggestions -->
+      <datalist id="languages">
+        <option value="RU">Russian</option>
+        <option value="EN">English</option>
+        <option value="LT">Lithuanian</option>
+        <option value="EE">Estonia</option>
+        <option value="DE">German</option>
+        <option value="PL">Polish</option>
+    </datalist>
+    
+     <datalist id="places">
+        <option value="Wakefield"></option>
+        <option value="London"></option>
+        <option value="Paris"></option>
+        <option value="Vilnius"></option>
+        <option value="Berlin"></option>
+        <option value="Moscow"></option>
+        <option value="Beijing"></option>
+        <option value="Tokyo"></option>
+    </datalist>
    <!-- upload javascript files -->
    <script src="vendors/jquery/jquery.min.js"></script>
    <script src="vendors/bootstrap/bootstrap.min.js"></script>
