@@ -27,6 +27,13 @@ nav{
     width: 8vw;
 }
 
+/* buttons */
+.btn-cities{
+        width: 100px;
+        height: 75px;
+        background: url("../img/cities.png");
+        border-radius: 50%;
+}
  /* animation */
 .loader{
     width: 200px;

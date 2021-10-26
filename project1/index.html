@@ -20,11 +20,24 @@
   <body>
     <!-- Nabbar -->
     <nav class="navbar navbar-expand-sm navbar-light bg-light">
-      <select class="form-select" id="countrySelect"></select>
+      <!-- select countries -->
+      <select
+        class="form-select"
+        id="countrySelect"
+        name="countrySelect"
+      ></select>
 
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
-          <li class="nav-item">Cities Info</li>
+          <li class="nav-item">
+            <button
+              type="button"
+              class="btn btn-cities"
+              title="Get Country & Cities Info"
+              data-bs-toggle="modal"
+              data-bs-target="#country_citiesModal"
+            ></button>
+          </li>
           <li class="nav-item"></li>
         </ul>
       </div>
@@ -38,6 +51,41 @@
       <span class="loader">Loading...</span>
       <span class="load-anim1"></span>
       <span class="load-anim2"></span>
+    </div>
+
+    <!-- MODALS -->
+    <div
+      class="modal fade"
+      id="country_citiesModal"
+      tabindex="-1"
+      aria-labelledby="country_citiesModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="country_citiesModalLabel">
+              Country & Cities Info
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">...</div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
     <!-- upload javascript files -->
     <script src="../task/vendors/jquery/jquery.min.js"></script>
