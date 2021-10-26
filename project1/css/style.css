@@ -28,11 +28,17 @@ nav{
 }
 
 /* buttons */
-.btn-cities{
+.btn{
         width: 100px;
         height: 75px;
-        background: url("../img/cities.png");
         border-radius: 50%;
+        margin: 0 2vw;
+}
+.btn-cities{
+    background: url("../img/cities.png");
+}
+.btn-wiki{
+    background: url("../img/wiki.png");
 }
  /* animation */
 .loader{
