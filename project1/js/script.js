@@ -65,4 +65,22 @@ const  setMap = (position) =>{
 
         }
       })
+
+    // call another ajax call to api_name countries using user location and select that location
+    $.ajax({
+        url: 'php/getApi.php',
+        type: 'POST',
+        dataType: 'json',
+        data: {
+           q : userPositionlat + ","+ userPositionlng,
+          "api_name": "countries"
+        },
+        success: function(result) {
+            const isoa2 = result['results'].results[0].components['ISO_3166-1_alpha-2'];
+            $('#countrySelect option[value=' +isoa2+']').prop("selected", true).change();
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          console.log(jqXHR);
+      }
+      })
 }
