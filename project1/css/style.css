@@ -46,6 +46,9 @@ nav{
 .btn-calendar{
     background: url("../img/calendar.png")no-repeat center;
 }
+.btn-weather{
+    background: url("../img/weather_forecast.png")no-repeat center;
+}
  /* animation */
 .loader{
     width: 200px;
