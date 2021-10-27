@@ -1,4 +1,4 @@
-$(window).on('load', function () {
+$(window).on('load',  () =>{
     if ($('.loading-area').length) {
         $('.loading-area').delay(1000).fadeOut('slow', function () {
         $(this).hide();
@@ -6,3 +6,7 @@ $(window).on('load', function () {
    });
   }
 })
+
+// when all html loaded execute this function
+$(document).ready(()=>{
+});
