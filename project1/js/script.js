@@ -30,11 +30,9 @@ $(document).ready(()=>{
     });
      // load and set map at current user position
      navigator.geolocation.getCurrentPosition(setMap);
-     
 });
 
 // FUNCTIONS
-
 // Sort Countries alphabetical order
 const  sortCountries = () =>{
     $("#countrySelect").append($("#countrySelect option")
@@ -45,7 +43,7 @@ const  sortCountries = () =>{
     );
 };
 
-// get user location
+// set map using user locations
 const  setMap = (position) =>{
     var userPositionlat = position.coords.latitude;
     var userPositionlng = position.coords.longitude;
@@ -53,13 +51,18 @@ const  setMap = (position) =>{
     // access map position and view
     let map = L.map('mapView').setView([userPositionlat,userPositionlng], 10);
   
-    // load map tile view
-    let Jawg_Streets = L.tileLayer('https://{s}.tile.jawg.io/jawg-streets/{z}/{x}/{y}{r}.png?access-token={accessToken}', {
-	attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-	minZoom: 0,
-	maxZoom: 22,
-	subdomains: 'abcd',
-	accessToken: '04yVMx6BriAAM2GxEbC0LLWicl9TJ5qCrka3agfo47w2WkFC99LicZd5yBRpggu8'
-}).addTo(map);
-  
+    // call ajax call to access token and draw a main map
+    $.ajax({
+        url: 'php/getApi.php',
+        type: 'POST',
+        success: function(result) {
+            // load map tile view
+                let Jawg_Streets = L.tileLayer(`https://{s}.tile.jawg.io/jawg-streets/{z}/{x}/{y}{r}.png?access-token=${result.accessToken}`, {
+                    attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                    minZoom: 0,
+                    maxZoom: 22,
+            }).addTo(map);
+
+        }
+      })
 }
