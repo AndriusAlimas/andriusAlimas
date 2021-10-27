@@ -31,14 +31,17 @@ nav{
 .btn{
         width: 100px;
         height: 75px;
-        border-radius: 50%;
-        margin: 0 2vw;
+        border-radius: 50%;  
 }
+
 .btn-cities{
-    background: url("../img/cities.png");
+    background: url("../img/cities.png")no-repeat center;
 }
 .btn-wiki{
-    background: url("../img/wiki.png");
+    background: url("../img/wiki.png")no-repeat center;
+}
+.btn-youtube{
+    background: url("../img/youtube.png")no-repeat center;
 }
  /* animation */
 .loader{
