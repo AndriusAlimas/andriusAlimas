@@ -22,9 +22,29 @@ nav{
     height: 10vh;
 }
 
+/* select */
 #countrySelect{
     margin: 2vh 5vw;
     width: 12vw;
+    font-size: 100%;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 0;
+    background-color: #c0392b;
+    border: none;
+    border-bottom: 2px solid #962d22;
+    color: #efefef;
+    padding: 15px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+/* hover effects for select countries */
+#countrySelect:hover,
+    #countrySelect:focus {
+  color: #c0392b;
+  background-color: white;
+  border-bottom-color: #DCDCDC;
 }
 
 /* buttons */
