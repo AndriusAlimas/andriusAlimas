@@ -20,14 +20,24 @@ $(document).ready(()=>{
             "api_name": "countryBorders"
           },
       success: function(result){
-        console.log("yes");
         result['data'].features.forEach(function (feature) {
           $("<option>",{
             value: feature.properties.iso_a2,
             text: feature.properties.name
           }).appendTo("#countrySelect");
         })
+        sortCountries();
       }
     });
-    // navigator.geolocation.getCurrentPosition(getUserLocation);
+    //  navigator.geolocation.getCurrentPosition(getUserLocation);
   });
+
+// FUNCTIONS
+  const  sortCountries = () =>{
+    $("#countrySelect").append($("#countrySelect option")
+        .remove().sort((a, b) => {
+            let at = $(a).text(), bt = $(b).text();
+            return (at > bt) ? 1 : ((at < bt) ? -1 : 0);
+        })
+    );
+};
