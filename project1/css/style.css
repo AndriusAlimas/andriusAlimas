@@ -52,6 +52,9 @@ nav{
 .btn-language{
     background: url("../img/language.png")no-repeat center;
 }
+.btn-covid{
+    background: url("../img/covid.png")no-repeat center;
+}
  /* animation */
 .loader{
     width: 200px;
