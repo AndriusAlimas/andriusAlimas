@@ -22,6 +22,11 @@ nav{
     height: 10vh;
 }
 
+/* main view map */
+#mapView{
+    height: 90vh;
+}
+
 /* select */
 #countrySelect{
     margin: 2vh 5vw;
