@@ -43,6 +43,9 @@ nav{
 .btn-youtube{
     background: url("../img/youtube.png")no-repeat center;
 }
+.btn-calendar{
+    background: url("../img/calendar.png")no-repeat center;
+}
  /* animation */
 .loader{
     width: 200px;
