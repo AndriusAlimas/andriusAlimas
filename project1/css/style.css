@@ -49,6 +49,9 @@ nav{
 .btn-weather{
     background: url("../img/weather_forecast.png")no-repeat center;
 }
+.btn-language{
+    background: url("../img/language.png")no-repeat center;
+}
  /* animation */
 .loader{
     width: 200px;
