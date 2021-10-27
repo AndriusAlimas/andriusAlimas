@@ -29,11 +29,13 @@ $(document).ready(()=>{
         sortCountries();
       }
     });
-    //  navigator.geolocation.getCurrentPosition(getUserLocation);
+     navigator.geolocation.getCurrentPosition(getUserLocation);
   });
 
 // FUNCTIONS
-  const  sortCountries = () =>{
+
+// Sort Countries alphabetical order
+const  sortCountries = () =>{
     $("#countrySelect").append($("#countrySelect option")
         .remove().sort((a, b) => {
             let at = $(a).text(), bt = $(b).text();
@@ -41,3 +43,10 @@ $(document).ready(()=>{
         })
     );
 };
+
+// get user location
+const  getUserLocation = (position) =>{
+    let userPositionlat = position.coords.latitude;
+    let userPositionlng = position.coords.longitude;
+    window.alert("lat" + userPositionlat + ", long " + userPositionlng);
+}
