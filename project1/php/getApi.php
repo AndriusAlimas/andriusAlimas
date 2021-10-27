@@ -7,29 +7,47 @@
         $server .= '/andriusAlimas';
     }
 
-     $show = true; // just variable to check formating
+     $show = false; // just variable to check formating
      $data = 'data';
+     $default = false;
     ini_set('display_errors', 'On');
     error_reporting(E_ALL);
 
     $executionStartTime = microtime(true);
-    $api_name = $_REQUEST['api_name'];
-    switch($api_name){
-       case 'countryBorders':
-        $show = false;
-        $url = 'http://'.$server.'/project1/json/countryBorders.geo.json';
-        break;
+    
+    if((isset($_REQUEST['api_name'])) && ($_REQUEST['api_name']!=null)){
+        $api_name = $_REQUEST['api_name'];
+    }else{
+        $api_name = "no name";
     }
     
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_URL,$url);
-
-    $result=curl_exec($ch);
-    curl_close($ch);
+    switch($api_name){
+       case 'countryBorders':
+            $url = 'http://'.$server.'/project1/json/countryBorders.geo.json';
+            break;
+       case 'countries':
+            $url='https://api.opencagedata.com/geocode/v1/json?key=2d40209da4f34c91a11e862854bfe317&q='.$_REQUEST['q'];
+            $data = 'results';
+            break;
+        default:
+        $default = true;
+        $output['accessToken']= '04yVMx6BriAAM2GxEbC0LLWicl9TJ5qCrka3agfo47w2WkFC99LicZd5yBRpggu8';
+        break;    
+    }
+    
+    if(!$default){
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_URL,$url);
+    
+        $result=curl_exec($ch);
+        curl_close($ch);
+        $decode = json_decode($result,true);  
+    }else{
+        $decode = json_decode($output['accessToken'],true);  
+    }
  
-    $decode = json_decode($result,true);    
     $output['status']['code'] = "200";
     $output['status']['name'] = "ok";
     $output['status']['description'] = "success";
