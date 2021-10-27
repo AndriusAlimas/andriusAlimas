@@ -8,10 +8,9 @@ $(window).on('load',  () =>{
    });
   }
 })
-
+ 
 // when all html loaded execute this function
 $(document).ready(()=>{
-
     $.ajax({
       url: "php/getApi.php",
       type: 'POST',
@@ -29,8 +28,10 @@ $(document).ready(()=>{
         sortCountries();
       }
     });
-     navigator.geolocation.getCurrentPosition(getUserLocation);
-  });
+     // load and set map at current user position
+     navigator.geolocation.getCurrentPosition(setMap);
+     
+});
 
 // FUNCTIONS
 
@@ -45,10 +46,10 @@ const  sortCountries = () =>{
 };
 
 // get user location
-const  getUserLocation = (position) =>{
-    let userPositionlat = position.coords.latitude;
-    let userPositionlng = position.coords.longitude;
-    
+const  setMap = (position) =>{
+    var userPositionlat = position.coords.latitude;
+    var userPositionlng = position.coords.longitude;
+
     // access map position and view
     let map = L.map('mapView').setView([userPositionlat,userPositionlng], 10);
   
@@ -60,5 +61,5 @@ const  getUserLocation = (position) =>{
 	subdomains: 'abcd',
 	accessToken: '04yVMx6BriAAM2GxEbC0LLWicl9TJ5qCrka3agfo47w2WkFC99LicZd5yBRpggu8'
 }).addTo(map);
-          // 
+  
 }
