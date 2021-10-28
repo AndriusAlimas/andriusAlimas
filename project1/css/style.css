@@ -27,6 +27,11 @@ nav{
     height: 90vh;
 }
 
+.bg-navbar{
+    background: linear-gradient(91deg, #e2e62d, #a9b050, #328544, #415699, #4b58a5, #9eaaac, #57585a, #343945);
+    background-size: 100% 100%;
+
+}
 /* select */
 #countrySelect{
     margin: 2vh 5vw;

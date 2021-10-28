@@ -20,7 +20,7 @@
     }else{
         $api_name = "no name";
     }
-    
+
     switch($api_name){
        case 'countryBorders':
             $url = 'http://'.$server.'/project1/json/countryBorders.geo.json';
@@ -31,7 +31,8 @@
             break;
         default:
         $default = true;
-        $output['accessToken']= '04yVMx6BriAAM2GxEbC0LLWicl9TJ5qCrka3agfo47w2WkFC99LicZd5yBRpggu8';
+        // $output['accessToken']= '04yVMx6BriAAM2GxEbC0LLWicl9TJ5qCrka3agfo47w2WkFC99LicZd5yBRpggu8';
+        $output['accessToken']= 'jpsJu9BjZoAekptrawpM'; // later on we need to encrypt this some how
         break;    
     }
     

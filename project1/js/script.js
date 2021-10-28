@@ -49,7 +49,9 @@ const  setMap = (position) =>{
     let userPositionlng = position.coords.longitude;
 
     // access map position and view
-    map = L.map('mapView').setView([userPositionlat,userPositionlng], 6);
+    map = L.map('mapView',{
+         zoomControl: false 
+    }).setView([userPositionlat,userPositionlng], 6);
 
    // add layer for selected country
    countryBorderLayer = L.layerGroup().addTo(map);
@@ -60,10 +62,17 @@ const  setMap = (position) =>{
         type: 'POST',
         success: function(result) {
             // load map tile view
-                let Jawg_Streets = L.tileLayer(`https://{s}.tile.jawg.io/jawg-streets/{z}/{x}/{y}{r}.png?access-token=${result.accessToken}`, {
-                    attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-                    minZoom: 0,
-                    maxZoom: 22,
+            //     let Jawg_Streets = L.tileLayer(`https://{s}.tile.jawg.io/jawg-streets/{z}/{x}/{y}{r}.png?access-token=${result.accessToken}`, {
+            //         attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            //         minZoom: 0,
+            //         maxZoom: 22,
+            // }).addTo(map);
+            let satellite_hybrid = L.tileLayer(`https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}@2x.jpg?key=${result.accessToken}`,{
+                attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
+                minZoom: 3,
+                maxZoom: 14,
+                detectRetina: true,
+                reuseTiles: true
             }).addTo(map);
 
         }
