@@ -23,7 +23,7 @@
 
     switch($api_name){
        case 'countryBorders':
-            $url = 'http://'.$server.'/project1/json/countryBorders.geo.json';
+            $url = 'https://'.$server.'/project1/json/countryBorders.geo.json';
             break;
        case 'countries':
             $url='https://api.opencagedata.com/geocode/v1/json?key=2d40209da4f34c91a11e862854bfe317&q='.$_REQUEST['q'];
