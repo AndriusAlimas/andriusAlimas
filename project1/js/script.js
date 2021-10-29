@@ -38,6 +38,10 @@ $(document).ready(()=>{
         {
             name: 'language',
             title: 'Get Words For This Country Language'
+        },
+        {
+            name: 'covid',
+            title: 'Get Covid Information'
         }
 
     ];
@@ -153,6 +157,9 @@ const generateModalButton = (modalName,title)=>{
                         case 'language' :
                             generateLanguageModal(isoa2);
                             break;    
+                        case 'covid' :
+                            generateCovidModal(isoa2);
+                            break;   
                     }
                     
             }
@@ -209,6 +216,12 @@ const generateWeatherModal = iso2 =>{
 const generateLanguageModal = iso2 =>{
     // $('#languageModal').modal('show');
 }
+
+// generate covid modal and show to the user
+const generateCovidModal = iso2 =>{
+    // $('#covidModal').modal('show');
+}
+
 // Event trigger select change
 $('#countrySelect').change(function() {
     let iso_a2 = $('#countrySelect option:selected').val();
