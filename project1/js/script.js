@@ -30,6 +30,10 @@ $(document).ready(()=>{
         {
             name:'calendar',
             title: 'Get Country Holidays & Day Off'
+        },
+        {
+            name: 'weather_forecast',
+            title: 'Get Weather Forecast'
         }
 
     ];
@@ -139,6 +143,9 @@ const generateModalButton = (modalName,title)=>{
                         case 'calendar' :
                             generateCalendarModal(isoa2);
                             break;    
+                        case 'weather_forecast' :
+                            generateWeatherModal(isoa2);
+                            break;    
                     }
                     
             }
@@ -184,6 +191,11 @@ const generateYoutubeModal = iso2 =>{
 // generate calendar modal and show to the user
 const generateCalendarModal = iso2 =>{
      // $('#calendarModal').modal('show');
+}
+
+// generate weather modal and show to the user
+const generateWeatherModal = iso2 =>{
+     // $('#weather_forecastModal').modal('show');
 }
 // Event trigger select change
 $('#countrySelect').change(function() {
