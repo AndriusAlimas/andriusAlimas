@@ -26,6 +26,10 @@ $(document).ready(()=>{
         {
             name:'youtube',
             title: 'See Video About Country'
+        },
+        {
+            name:'calendar',
+            title: 'Get Country Holidays & Day Off'
         }
 
     ];
@@ -132,6 +136,9 @@ const generateModalButton = (modalName,title)=>{
                         case 'youtube' :
                             generateYoutubeModal(isoa2);
                             break;    
+                        case 'calendar' :
+                            generateCalendarModal(isoa2);
+                            break;    
                     }
                     
             }
@@ -168,9 +175,15 @@ const generateCountryModal = isoa2 =>{
 const generateWikiModal = isoa2 =>{
     // $('#wikiModal').modal('show');
 }
+
 // generate youtube modal and show to the user
 const generateYoutubeModal = iso2 =>{
    // $('#youtubeModal').modal('show');
+}
+
+// generate calendar modal and show to the user
+const generateCalendarModal = iso2 =>{
+     // $('#calendarModal').modal('show');
 }
 // Event trigger select change
 $('#countrySelect').change(function() {
