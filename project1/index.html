@@ -17,6 +17,9 @@
     <!-- Leaflet CSS file -->
     <link rel="stylesheet" href="./vendors/leaflet/leaflet.css" />
 
+    <!-- adding easy button CSS file -->
+    <link rel="stylesheet" href="./vendors/leaflet/easy-button.css" />
+
     <!-- Adding custom stylesheet -->
     <link rel="stylesheet" href="css/style.css" />
   </head>
@@ -29,28 +32,6 @@
 
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav w-100 justify-content-around">
-          <!-- button to country and cities info modal -->
-          <li class="nav-item">
-            <button
-              type="button"
-              class="btn btn-cities"
-              title="Get Country & Cities Info"
-              data-bs-toggle="modal"
-              data-bs-target="#country_citiesModal"
-            ></button>
-          </li>
-
-          <!-- button to wikipedia info modal -->
-          <li class="nav-item">
-            <button
-              type="button"
-              class="btn btn-wiki"
-              title="Get From Wikipedia Info"
-              data-bs-toggle="modal"
-              data-bs-target="#wikiModal"
-            ></button>
-          </li>
-
           <!-- button to video about country modal -->
           <li class="nav-item">
             <button
@@ -165,6 +146,7 @@
     <script src="./vendors/jquery/jquery.min.js"></script>
     <script src="./vendors/bootstrap/bootstrap.min.js"></script>
     <script src="./vendors/leaflet/leaflet.js"></script>
+    <script src="./vendors/leaflet/easy-button.min.js"></script>
     <script src="js/script.js"></script>
   </body>
 </html>
