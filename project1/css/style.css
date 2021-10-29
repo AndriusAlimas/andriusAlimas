@@ -9,12 +9,14 @@
 nav, main{
     opacity: 0.2;
 }
-
 body{
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 16px;
     margin: 0;
     background: #fff;
+}
+img{
+    width: 100%;
 }
 
 /* our navbar */
@@ -31,6 +33,7 @@ nav{
     background: linear-gradient(91deg, #e2e62d, #a9b050, #328544, #415699, #4b58a5, #9eaaac, #57585a, #343945);
     background-size: 100% 100%;
 }
+
 /* select */
 #countrySelect{
     margin: 2vh 5vw;
@@ -60,15 +63,21 @@ nav{
 .btn{
         width: 100px;
         height: 75px;
-        border-radius: 50%;  
+        border-radius: 50%;
+        border: none;  
 }
 
-.btn-cities{
-    background: url("../img/cities.png")no-repeat center;
+/* easie button style modifications */
+.leaflet-bar.easy-button-container.leaflet-control{
+    border: none;
 }
-.btn-wiki{
-    background: url("../img/wiki.png")no-repeat center;
+.leaflet-touch .leaflet-bar button{
+    height:60px;
+    width: 60px;
+    border-radius: 50%;
+    padding: 0;
 }
+
 .btn-youtube{
     background: url("../img/youtube.png")no-repeat center;
 }
