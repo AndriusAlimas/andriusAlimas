@@ -194,32 +194,32 @@ const generateCountryModal = isoa2 =>{
 
 // generate wiki modal and show to the user
 const generateWikiModal = isoa2 =>{
-    // $('#wikiModal').modal('show');
+     $('#wikiModal').modal('show');
 }
 
 // generate youtube modal and show to the user
 const generateYoutubeModal = iso2 =>{
-   // $('#youtubeModal').modal('show');
+   $('#youtubeModal').modal('show');
 }
 
 // generate calendar modal and show to the user
 const generateCalendarModal = iso2 =>{
-     // $('#calendarModal').modal('show');
+     $('#calendarModal').modal('show');
 }
 
 // generate weather modal and show to the user
 const generateWeatherModal = iso2 =>{
-     // $('#weather_forecastModal').modal('show');
+     $('#weather_forecastModal').modal('show');
 }
 
 // generate language modal and show to the user
 const generateLanguageModal = iso2 =>{
-    // $('#languageModal').modal('show');
+    $('#languageModal').modal('show');
 }
 
 // generate covid modal and show to the user
 const generateCovidModal = iso2 =>{
-    // $('#covidModal').modal('show');
+     $('#covidModal').modal('show');
 }
 
 // Event trigger select change
