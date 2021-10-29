@@ -34,6 +34,10 @@ $(document).ready(()=>{
         {
             name: 'weather_forecast',
             title: 'Get Weather Forecast'
+        },
+        {
+            name: 'language',
+            title: 'Get Words For This Country Language'
         }
 
     ];
@@ -146,6 +150,9 @@ const generateModalButton = (modalName,title)=>{
                         case 'weather_forecast' :
                             generateWeatherModal(isoa2);
                             break;    
+                        case 'language' :
+                            generateLanguageModal(isoa2);
+                            break;    
                     }
                     
             }
@@ -196,6 +203,11 @@ const generateCalendarModal = iso2 =>{
 // generate weather modal and show to the user
 const generateWeatherModal = iso2 =>{
      // $('#weather_forecastModal').modal('show');
+}
+
+// generate language modal and show to the user
+const generateLanguageModal = iso2 =>{
+    // $('#languageModal').modal('show');
 }
 // Event trigger select change
 $('#countrySelect').change(function() {
