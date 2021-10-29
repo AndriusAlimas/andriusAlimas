@@ -59,14 +59,6 @@ nav{
   border-bottom-color: #DCDCDC;
 }
 
-/* buttons */
-.btn{
-        width: 100px;
-        height: 75px;
-        border-radius: 50%;
-        border: none;  
-}
-
 /* easie button style modifications */
 .leaflet-bar.easy-button-container.leaflet-control{
     border: none;
@@ -79,21 +71,6 @@ nav{
     background: none;
 }
 
-.btn-youtube{
-    background: url("../img/youtube.png")no-repeat center;
-}
-.btn-calendar{
-    background: url("../img/calendar.png")no-repeat center;
-}
-.btn-weather{
-    background: url("../img/weather_forecast.png")no-repeat center;
-}
-.btn-language{
-    background: url("../img/language.png")no-repeat center;
-}
-.btn-covid{
-    background: url("../img/covid.png")no-repeat center;
-}
  /* animation */
 .loader{
     width: 200px;
