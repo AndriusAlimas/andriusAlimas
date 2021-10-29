@@ -14,14 +14,20 @@ $(window).on('load',  () =>{
 $(document).ready(()=>{
     // All Buttons Modals object name and title, will help to create this modal depending on name property
     // Enter object to create more buttons modals if need it with property name and title
-   let myModals = [{
-        name:'country_cities',
-        title: 'Get Info About Country and Cities'
+   let myModals = [
+       {
+             name:'country_cities',
+             title: 'Get Info About Country and Cities'
         },
         {
             name: 'wiki',
             title: 'Get From Wikipedia Info'
+        },
+        {
+            name:'youtube',
+            title: 'See Video About Country'
         }
+
     ];
 
     $.ajax({
@@ -123,6 +129,9 @@ const generateModalButton = (modalName,title)=>{
                         case 'wiki'   :
                             generateWikiModal(isoa2);
                             break; 
+                        case 'youtube' :
+                            generateYoutubeModal(isoa2);
+                            break;    
                     }
                     
             }
@@ -151,13 +160,17 @@ const drawCountryBorders = (feature_collection, iso_a2) =>{
 }
 
 // generate country modal and show to the user
-const generateCountryModal = (isoa2) =>{
+const generateCountryModal = isoa2 =>{
     $('#country_citiesModal').modal('show');
 }
 
 // generate wiki modal and show to the user
-const generateWikiModal = (isoa2) =>{
+const generateWikiModal = isoa2 =>{
     // $('#wikiModal').modal('show');
+}
+// generate youtube modal and show to the user
+const generateYoutubeModal = iso2 =>{
+   // $('#youtubeModal').modal('show');
 }
 // Event trigger select change
 $('#countrySelect').change(function() {
