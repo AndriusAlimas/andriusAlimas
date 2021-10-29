@@ -22,31 +22,38 @@ img{
 /* our navbar */
 nav{
     height: 10vh;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 10%;
+    margin: 20px auto;
+    max-width: 400px;
+    text-align: center;
+    padding: 10px;
+    z-index: 100;
 }
 
-/* main view map */
+/* Main  Map View */
 #mapView{
-    height: 90vh;
+    width: auto;
+    height: 100vh;
+    z-index: 1;
 }
-
-.bg-navbar{
-    background: linear-gradient(91deg, #e2e62d, #a9b050, #328544, #415699, #4b58a5, #9eaaac, #57585a, #343945);
-    background-size: 100% 100%;
-}
-
 /* select */
 #countrySelect{
-    margin: 2vh 5vw;
-    width: 12vw;
-    font-size: 100%;
+    position: fixed;
+    top: 35%;
+    right: 0;
+    margin: 1vh 1vw;
     font-weight: bold;
     cursor: pointer;
-    border-radius: 0;
+    border-radius: 20%;
     background-color: #c0392b;
     border: none;
     border-bottom: 2px solid #962d22;
     color: #efefef;
-    padding: 15px;
+    padding: 10px;
+    text-align: center;
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
