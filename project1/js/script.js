@@ -200,7 +200,8 @@ const generateCountryModal = isoa2 =>{
             // erase fields
             $(".languages").html("");
             $(".topbigcities").html("");
-            
+            $(".topsmallcities").html("");            
+
             // initialize required variables for fields 
             let flagSrc = result['data'].flag.file;
             let population = result['data'].population;
@@ -225,33 +226,32 @@ const generateCountryModal = isoa2 =>{
            for(language in languages){
             $(".languages").append(" " + "<mark>" + languages[language] + "</mark>");
            }
-    
+           
            // another ajax call for top biggest cities
             $.ajax({
                 url: "php/getApi.php",
                 dataType: 'json',
                 data: {
                     "api_name": "countries_cities",
-                    "isoa2" : isoa2
+                    "isoa2" : isoa2,
+                    "population" : 1000000
                     },
                     success: function(result){
-                        let cities = result['data'].cities;
-                        // sort by population, highest population goes first
-                        cities.sort(function (a, b) {
-                            return b.population - a.population;
-                        });
-    
-                            let id = 0;
-                            let population = 0;
-                            let name = ""
-
-                                for(city in cities){
-                                    id++;
-                                    population = cities[city].population;
-                                    name = cities[city].name;
-                                    $(".topbigcities").append("<tr><th scope='row'>"+ id + "</th><td>" + name + "</td><td>" + population + "</td></tr>");
-                                }
-                    }
+                        populateTableCities(result['data'].cities,true);     
+            // another ajax call for small cities cities
+            $.ajax({
+                url: "php/getApi.php",
+                dataType: 'json',
+                data: {
+                    "api_name": "countries_cities",
+                    "isoa2" : isoa2,
+                    "population" : 20000
+                    },   
+                    success: function(result){
+                        populateTableCities(result['data'].cities,false);
+                    }  
+                    });
+          }
         }); // end inner ajax call
    
         } // end outer ajax success call   
@@ -260,6 +260,33 @@ const generateCountryModal = isoa2 =>{
     // show the modal  
     $('#country_citiesModal').modal('show');
 }
+
+// populate table cities, depending on cities population
+const populateTableCities = (cities,isBig) =>{
+    className = ".topsmallcities";
+     // check if we have cities and sort by population, highest population goes first
+     if(cities != null){
+        cities.sort(function (a, b) {
+            return b.population - a.population;
+        });
+    }
+
+    let id = 0;
+    let population = 0;
+    let name = ""
+
+    
+        if(isBig){
+           className = ".topbigcities";
+        }
+       
+    for(city in cities){
+        id++;
+        population = cities[city].population;
+        name = cities[city].name;
+        $(`${className}`).append("<tr><th scope='row'>"+ id + "</th><td>" + name + "</td><td>" + population + "</td></tr>");
+    }    
+} 
 
 // generate wiki modal and show to the user
 const generateWikiModal = isoa2 =>{

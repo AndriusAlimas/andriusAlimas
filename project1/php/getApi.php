@@ -35,7 +35,7 @@
         case 'countries_details':
             // if you want cities change curl to different call
             if($showCities){
-                $url = 'https://countries-cities.p.rapidapi.com/location/country/'.$_REQUEST['isoa2'].'/city/list?page=1&per_page=100&population=1000000';
+                $url = 'https://countries-cities.p.rapidapi.com/location/country/'.$_REQUEST['isoa2'].'/city/list?page=1&per_page=100&population='.$_REQUEST['population'];
             }
             else{
                 $url = 'https://countries-cities.p.rapidapi.com/location/country/'.$_REQUEST['isoa2'];
