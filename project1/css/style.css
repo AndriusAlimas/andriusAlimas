@@ -17,6 +17,10 @@ body{
     font-family: 'Alegreya SC', serif;
 }
 
+header{
+    font-size: 1.3rem;
+}
+
 img{
     width: 100%;
 }

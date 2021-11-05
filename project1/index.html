@@ -20,6 +20,13 @@
     <!-- adding easy button CSS file -->
     <link rel="stylesheet" href="./vendors/leaflet/easy-button.css" />
 
+    <!-- adding google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Alegreya+SC:ital,wght@1,500&display=swap"
+      rel="stylesheet"
+    />
     <!-- Adding custom stylesheet -->
     <link rel="stylesheet" href="css/style.css" />
   </head>
@@ -55,21 +62,104 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <!-- header -->
-          <div class="modal-header">
-            <h5 class="modal-title" id="country_citiesModalLabel">
-              Country & Cities Info
-            </h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
+          <div class="modal-header container">
+            <div class="row m-0">
+              <img id="flag" class="col-6 p-0 m-0 border border-dark" />
+              <div class="col-6 row justify-content-between">
+                <span class="countryName display-6"> </span>
+                <span class="fw-bolder mt-3"
+                  >Capital: <mark class="capital"></mark
+                ></span>
+              </div>
+
+              <button
+                type="button"
+                class="btn-close col-1"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
           </div>
+
           <!-- body -->
+          <div class="modal-body container text-center">
+            <!-- navigation tabs -->
+            <ul class="nav nav-tabs" id="tabContent" role="tablist">
+              <li class="nav-item" role="presentation">
+                <a
+                  id="details-tab"
+                  href="#details"
+                  data-bs-toggle="tab"
+                  role="tab"
+                  class="nav-link active"
+                  aria-controls="details"
+                  aria-selected="true"
+                  >Details</a
+                >
+              </li>
+              <li class="nav-item" role="presentation">
+                <a
+                  id="cities-tab"
+                  href="#cities"
+                  data-bs-toggle="tab"
+                  role="tab"
+                  class="nav-link"
+                  aria-controls="cities"
+                  aria-selected="false"
+                  >Top Big Cities</a
+                >
+              </li>
+            </ul>
 
-          <div class="modal-body">...</div>
+            <!-- Details Tab panel -->
+            <div class="tab-content">
+              <div
+                role="tabpanel"
+                class="tab-pane fade in show active"
+                aria-labelledby="details-tab"
+                id="details"
+              >
+                <div class="row">
+                  <span class="col-6 col-lg-3 fw-bolder">Population:</span>
+                  <span class="population col-6 col-lg-3"></span>
+                  <span class="col-6 col-lg-3 fw-bolder">Area: </span>
+                  <span class="area col-6 col-lg-3"></span>
+                </div>
+                <div class="row">
+                  <span class="col-6 col-lg-3 fw-bolder">Currency: </span>
+                  <span class="currency col-6 col-lg-3"></span>
+                  <span class="col-6 col-lg-3 fw-bolder">Phone Code: </span>
+                  <span class="phone_code col-6 col-lg-3"></span>
 
+                  <span class="col-6 col-lg-6 fw-bolder">Total Cities: </span>
+                  <span class="total_cities col-6 col-lg-6"></span>
+
+                  <span class="col-12 fw-bolder">Languages speak: </span>
+                  <span class="languages fst-italic"></span>
+                </div>
+              </div>
+
+              <!-- Cities Tab Panel -->
+              <div
+                role="tabpanel"
+                class="tab-pane fade"
+                id="cities"
+                aria-labelledby="cities-tab"
+              >
+                <header class="my-3">Top Cities Over 1mln</header>
+                <table class="table table-striped">
+                  <thead class="table-warning">
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">City</th>
+                      <th scope="col">Population</th>
+                    </tr>
+                  </thead>
+                  <tbody class="topbigcities"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
           <!-- footer -->
           <div class="modal-footer">
             <button
