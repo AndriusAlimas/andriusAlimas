@@ -109,6 +109,18 @@
                   >Top Big Cities</a
                 >
               </li>
+              <li class="nav-item" role="presentation">
+                <a
+                  id="cities-tab"
+                  href="#cities-small"
+                  data-bs-toggle="tab"
+                  role="tab"
+                  class="nav-link"
+                  aria-controls="cities-small"
+                  aria-selected="false"
+                  >Top Small Cities</a
+                >
+              </li>
             </ul>
 
             <!-- Details Tab panel -->
@@ -156,6 +168,25 @@
                     </tr>
                   </thead>
                   <tbody class="topbigcities"></tbody>
+                </table>
+              </div>
+              <!-- Cities-Small Tab Panel -->
+              <div
+                role="tabpanel"
+                class="tab-pane fade"
+                id="cities-small"
+                aria-labelledby="cities-small-tab"
+              >
+                <header class="my-3">Top Cities Over 5k</header>
+                <table class="table table-striped">
+                  <thead class="table-warning">
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">City</th>
+                      <th scope="col">Population</th>
+                    </tr>
+                  </thead>
+                  <tbody class="topsmallcities"></tbody>
                 </table>
               </div>
             </div>
