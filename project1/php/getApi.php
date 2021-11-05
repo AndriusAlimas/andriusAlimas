@@ -1,5 +1,4 @@
 <?php
-
     // check if server local or not
   $server = $_SERVER['SERVER_NAME'];
     if($server === "localhost")
@@ -8,6 +7,7 @@
     }
 
      $show = false; // just variable to check formating
+     $showCities = false; // just variable to check if show country cities when need it
      $data = 'data';
      $default = false;
     ini_set('display_errors', 'On');
@@ -15,6 +15,7 @@
 
     $executionStartTime = microtime(true);
     
+    // receive api name, then we use in switch 
     if((isset($_REQUEST['api_name'])) && ($_REQUEST['api_name']!=null)){
         $api_name = $_REQUEST['api_name'];
     }else{
@@ -29,10 +30,56 @@
             $url='https://api.opencagedata.com/geocode/v1/json?key=2d40209da4f34c91a11e862854bfe317&q='.$_REQUEST['q'];
             $data = 'results';
             break;
+        case 'countries_cities':   
+              $showCities = true; 
+        case 'countries_details':
+            // if you want cities change curl to different call
+            if($showCities){
+                $url = 'https://countries-cities.p.rapidapi.com/location/country/'.$_REQUEST['isoa2'].'/city/list?page=1&per_page=100&population=1000000';
+            }
+            else{
+                $url = 'https://countries-cities.p.rapidapi.com/location/country/'.$_REQUEST['isoa2'];
+            }
+
+            $curl = curl_init();
+            curl_setopt_array($curl, [ 
+                CURLOPT_URL => $url ,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_HTTPHEADER => [
+                    "x-rapidapi-host: countries-cities.p.rapidapi.com",
+                    "x-rapidapi-key: 9b655893f9mshb01f5c9d312d303p1a5424jsncf783eff3535"
+                ],
+            ]);
+            
+            $response = curl_exec($curl);
+                $err = curl_error($curl);
+
+                curl_close($curl);
+
+                if ($err) {
+                    echo "cURL Error #:" . $err;
+                } else {
+                    $decode = json_decode($response,true);  
+
+                    
+                $output['status']['code'] = "200";
+                $output['status']['name'] = "ok";
+                $output['status']['description'] = "success";
+                $output['status']['returnedIn'] = intval((microtime(true) - $executionStartTime) * 1000) . " ms";
+                $output[$data] = $decode;   
+                    header('Content-Type: application/json; charset=UTF-8');
+                    echo json_encode($output);
+                    exit;
+                }
         default:
         $default = true;
-        // $output['accessToken']= '04yVMx6BriAAM2GxEbC0LLWicl9TJ5qCrka3agfo47w2WkFC99LicZd5yBRpggu8';
-        $output['accessToken']= 'jpsJu9BjZoAekptrawpM'; // later on we need to encrypt this some how
+        $output['accessToken']= '04yVMx6BriAAM2GxEbC0LLWicl9TJ5qCrka3agfo47w2WkFC99LicZd5yBRpggu8'; // later on we need to encrypt this somehow
         break;    
     }
     
@@ -54,7 +101,6 @@
     $output['status']['description'] = "success";
     $output['status']['returnedIn'] = intval((microtime(true) - $executionStartTime) * 1000) . " ms";
     
-    // $output[$data] = $decode;
  // because some decode is different we need to make sure its right format
  if($show == true){ 
     $output['data'] = $decode[$api_name];
@@ -62,7 +108,5 @@
     $output[$data] = $decode;   
 }
     header('Content-Type: application/json; charset=UTF-8');
-
     echo json_encode($output);
-
 ?>
