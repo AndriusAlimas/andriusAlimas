@@ -187,6 +187,77 @@ const drawCountryBorders = (feature_collection, iso_a2) =>{
 
 // generate country modal and show to the user
 const generateCountryModal = isoa2 =>{
+
+    // call ajax call
+    $.ajax({
+        url: "php/getApi.php",
+        dataType: 'json',
+        data: {
+              "api_name": "countries_details",
+              "isoa2" : isoa2
+            },
+        success: function(result){
+            // erase fields
+            $(".languages").html("");
+            $(".topbigcities").html("");
+            
+            // initialize required variables for fields 
+            let flagSrc = result['data'].flag.file;
+            let population = result['data'].population;
+            let countryName = result['data'].name;
+            let area_size = result['data'].area_size;
+            let currency = result['data'].currency.name;
+            let capital = result['data'].capital.name;
+            let phone_code = result['data'].phone_code;
+            let total_cities = result['data'].total_cities;
+            let languages = result['data'].languages; // this one is object
+
+            // use variables to change data
+            $("#flag").attr("src",flagSrc);
+            $(".countryName").text(countryName);
+            $(".population").text(population);
+            $(".area").text(area_size);
+            $(".currency").text(currency);
+            $(".capital").text(capital);
+            $(".phone_code").text("+"+phone_code);
+            $(".total_cities").text(total_cities);
+
+           for(language in languages){
+            $(".languages").append(" " + "<mark>" + languages[language] + "</mark>");
+           }
+    
+           // another ajax call for top biggest cities
+            $.ajax({
+                url: "php/getApi.php",
+                dataType: 'json',
+                data: {
+                    "api_name": "countries_cities",
+                    "isoa2" : isoa2
+                    },
+                    success: function(result){
+                        let cities = result['data'].cities;
+                        // sort by population, highest population goes first
+                        cities.sort(function (a, b) {
+                            return b.population - a.population;
+                        });
+    
+                            let id = 0;
+                            let population = 0;
+                            let name = ""
+
+                                for(city in cities){
+                                    id++;
+                                    population = cities[city].population;
+                                    name = cities[city].name;
+                                    $(".topbigcities").append("<tr><th scope='row'>"+ id + "</th><td>" + name + "</td><td>" + population + "</td></tr>");
+                                }
+                    }
+        }); // end inner ajax call
+   
+        } // end outer ajax success call   
+      }); // end outer ajax call
+
+    // show the modal  
     $('#country_citiesModal').modal('show');
 }
 
