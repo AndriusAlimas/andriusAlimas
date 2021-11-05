@@ -69,7 +69,8 @@ nav{
     margin: 1vh auto;
 }
 .modal-content{
-    box-shadow: 7px 7px 0px 2px #fafafa;
+    background-image: linear-gradient(to left bottom, #dcdc7b, #dfd366, #e4c951, #eabe3c, #f0b225);
+    box-shadow: 0px 20px 0px -10px #000, 0px -20px 0px -10px #000, 20px 0px 0px -10px #000, -20px 0px 0px -10px #000, 0px 0px 0px 10px #ff0000, 5px 5px 15px 5px rgb(0 0 0 / 0%);
 }
 /* hover effects for select countries */
 #countrySelect:hover,
