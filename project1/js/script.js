@@ -95,12 +95,10 @@ const  setMap = (position) =>{
         url: 'php/getApi.php',
         type: 'POST',
         success: function(result) {
-            let satellite_hybrid = L.tileLayer(`https://api.maptiler.com/maps/hybrid/{z}/{x}/{y}@2x.jpg?key=${result.accessToken}`,{
-                attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
+            L.tileLayer(`https://{s}.tile.jawg.io/jawg-sunny/{z}/{x}/{y}{r}.png?access-token=${result.accessToken}`,{
+                attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
                 minZoom: 3,
                 maxZoom: 14,
-                detectRetina: true,
-                reuseTiles: true
             }).addTo(map);
 
         }
