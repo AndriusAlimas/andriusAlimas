@@ -65,6 +65,12 @@ nav{
     -moz-appearance: none;
 }
 
+#details{
+    font-size: large;
+    padding: 2vh 2vw;
+    border: 1px solid slategray;
+}
+
 .row span{
     margin: 1vh auto;
 }
