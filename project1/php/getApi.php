@@ -46,8 +46,6 @@
 
             if($usePage){
                 $url = 'https://countries-cities.p.rapidapi.com/location/country/'.$_REQUEST['isoa2'].'/city/list?page='.$_REQUEST['page'].'&per_page=100&population='.$_REQUEST['population'];
-                
-                // $url = '/country/GB/city/list?format=json&min_population='.$_REQUEST['population'].'&language=en&.'&per_page=100';
             }
 
             $curl = curl_init();
@@ -86,6 +84,9 @@
                     echo json_encode($output);
                     exit;
                 }
+          case 'geonames':
+            $url = 'http://api.geonames.org/wikipediaSearchJSON?q='.$_REQUEST['q'].'&title='.$_REQUEST['q'].'&maxRows=5&username=andriusAlimas';
+            break;
         default:
         $default = true;
         $output['accessToken']= '04yVMx6BriAAM2GxEbC0LLWicl9TJ5qCrka3agfo47w2WkFC99LicZd5yBRpggu8'; // later on we need to encrypt this somehow
