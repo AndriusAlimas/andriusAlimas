@@ -187,7 +187,7 @@ const drawCountryBorders = (feature_collection, iso_a2) =>{
 
 // generate country modal and show to the user
 const generateCountryModal = isoa2 =>{
-
+   let cities_array =  [];
     // call ajax call
     $.ajax({
         url: "php/getApi.php",
@@ -216,29 +216,18 @@ const generateCountryModal = isoa2 =>{
             // use variables to change data
             $("#flag").attr("src",flagSrc);
             $(".countryName").text(countryName);
-            $(".population").text(population);
-            $(".area").text(area_size);
+            $(".population").text(numberWithCommas(population));
+            $(".area").text(numberWithCommas(area_size));
             $(".currency").text(currency);
             $(".capital").text(capital);
             $(".phone_code").text("+"+phone_code);
-            $(".total_cities").text(total_cities);
+            $(".total_cities").text(numberWithCommas(total_cities));
 
            for(language in languages){
             $(".languages").append(" " + "<mark>" + languages[language] + "</mark>");
            }
-           
-           // another ajax call for top biggest cities
-            $.ajax({
-                url: "php/getApi.php",
-                dataType: 'json',
-                data: {
-                    "api_name": "countries_cities",
-                    "isoa2" : isoa2,
-                    "population" : 1000000
-                    },
-                    success: function(result){
-                        populateTableCities(result['data'].cities,true);     
-            // another ajax call for small cities cities
+  
+            // ajax call to get total page number for cities, because max capacity for this api is 100, we need more to get all cities
             $.ajax({
                 url: "php/getApi.php",
                 dataType: 'json',
@@ -248,45 +237,119 @@ const generateCountryModal = isoa2 =>{
                     "population" : 20000
                     },   
                     success: function(result){
-                        populateTableCities(result['data'].cities,false);
-                    }  
-                    });
+                        total_pages = result['data'].total_pages;
+                        let cities = result['data'].cities;
+                                       
+                            for(city in cities){
+                                cities_array.push(cities[city]); 
+                                }
+                        if( total_pages > 1){
+                            for(page = 2;page < total_pages+1;page++ ){
+                                // if its more than 100 cities means more pages we need to call more to get all cities
+                                $.ajax({
+                                    url: "php/getApi.php",
+                                    dataType: 'json',
+                                    type: 'POST',
+                                    data: {
+                                        "api_name": "countries_cities-morePage",
+                                        "isoa2" : isoa2,
+                                        "page" : page,
+                                        "population" : 20000
+                                    },
+                                    success: function(result){
+                                
+                                        let cities = result['data'].cities;
+                                       
+                                        for(city in cities){
+                                            cities_array.push(cities[city]);
+                                            
+                                        }
+                                        // only call populateTableCities when everything is done
+                                        if(total_pages * 100 - 100  < cities_array.length){
+                                             populateTableCities(cities_array);
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                        else{
+                            populateTableCities(result['data'].cities);
+                        }
+                 }  
+            });
           }
-        }); // end inner ajax call
-   
-        } // end outer ajax success call   
-      }); // end outer ajax call
-
+        });        
     // show the modal  
     $('#country_citiesModal').modal('show');
 }
 
 // populate table cities, depending on cities population
-const populateTableCities = (cities,isBig) =>{
-    className = ".topsmallcities";
-     // check if we have cities and sort by population, highest population goes first
-     if(cities != null){
+const populateTableCities = cities =>{
+    let topBigCities = [];
+    let topSmallCities = [];
+    let topSmallCitiesLimit = [];
+    let className = ".topsmallcities";
+
+    // sorting big cities 
+    for(city in cities){
+        if(cities[city].population > 1000000){
+        topBigCities.push(cities[city]);
+      }
+    }
+    sortCitiesPopulation(topBigCities);
+
+    // sorting small cities 
+    for(city in cities){
+        if(cities[city].population >20000 && cities[city].population < 1000000){
+        topSmallCities.push(cities[city]);
+      }
+    }     
+    sortCitiesPopulation(topSmallCities); 
+    
+    // limiting small cities only show 100 on the table
+    for(let i = 0;i< topSmallCities.length;i++){
+        topSmallCitiesLimit.push(topSmallCities[i]);
+        if(i == 99){
+            break;
+        }
+    }
+    // draw tables by giving small and big cities results
+    drawCitiesTable(topSmallCitiesLimit,className);
+
+    if(topBigCities[0] != null && topBigCities[0].population > 1000000){
+      className = ".topbigcities";
+           drawCitiesTable(topBigCities,className);
+    }
+} 
+
+const numberWithCommas = number =>{
+    return number.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+}
+
+// function that draw city table by giving result
+const drawCitiesTable = (cities,className) =>{
+    let id = 0;
+    let population = 0;
+    let name = ""
+    if(cities != null){
+         for(city in cities){
+        id++;
+        population = cities[city].population;
+        name = cities[city].name;
+        $(`${className}`).append("<tr><th scope='row'>"+ id + "</th><td>" + name + "</td><td>" + numberWithCommas(population) + "</td></tr>");
+    }   
+    }  
+}
+
+// sorting cities by population
+const sortCitiesPopulation = cities =>{
+    if(cities != null){
+ 
         cities.sort(function (a, b) {
             return b.population - a.population;
         });
     }
-
-    let id = 0;
-    let population = 0;
-    let name = ""
-
-    
-        if(isBig){
-           className = ".topbigcities";
-        }
-       
-    for(city in cities){
-        id++;
-        population = cities[city].population;
-        name = cities[city].name;
-        $(`${className}`).append("<tr><th scope='row'>"+ id + "</th><td>" + name + "</td><td>" + population + "</td></tr>");
-    }    
-} 
+}
 
 // generate wiki modal and show to the user
 const generateWikiModal = isoa2 =>{

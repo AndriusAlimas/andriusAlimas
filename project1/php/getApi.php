@@ -8,6 +8,7 @@
 
      $show = false; // just variable to check formating
      $showCities = false; // just variable to check if show country cities when need it
+     $usePage = false;
      $data = 'data';
      $default = false;
     ini_set('display_errors', 'On');
@@ -30,15 +31,23 @@
             $url='https://api.opencagedata.com/geocode/v1/json?key=2d40209da4f34c91a11e862854bfe317&q='.$_REQUEST['q'];
             $data = 'results';
             break;
+        case 'countries_cities-morePage':
+              $usePage = true;    
         case 'countries_cities':   
               $showCities = true; 
         case 'countries_details':
             // if you want cities change curl to different call
             if($showCities){
-                $url = 'https://countries-cities.p.rapidapi.com/location/country/'.$_REQUEST['isoa2'].'/city/list?page=1&per_page=100&population='.$_REQUEST['population'];
+                $url = 'https://countries-cities.p.rapidapi.com/location/country/'.$_REQUEST['isoa2'].'/city/list?population='.$_REQUEST['population'];
             }
             else{
                 $url = 'https://countries-cities.p.rapidapi.com/location/country/'.$_REQUEST['isoa2'];
+            }
+
+            if($usePage){
+                $url = 'https://countries-cities.p.rapidapi.com/location/country/'.$_REQUEST['isoa2'].'/city/list?page='.$_REQUEST['page'].'&per_page=100&population='.$_REQUEST['population'];
+                
+                // $url = '/country/GB/city/list?format=json&min_population='.$_REQUEST['population'].'&language=en&.'&per_page=100';
             }
 
             $curl = curl_init();
