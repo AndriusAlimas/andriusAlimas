@@ -12,6 +12,7 @@ $(window).on('load',  () =>{
  
 // when all html loaded execute this function
 $(document).ready(()=>{
+    countryName = "";
     // All Buttons Modals object name and title, will help to create this modal depending on name property
     // Enter object to create more buttons modals if need it with property name and title
    let myModals = [
@@ -116,6 +117,7 @@ const  setMap = (position) =>{
         success: function(result) {
             const isoa2 = result['results'].results[0].components['ISO_3166-1_alpha-2'];
             $('#countrySelect option[value=' +isoa2+']').prop("selected", true).change();
+            countryName = $('#countrySelect option:selected').text();
         },
         error: function(jqXHR, textStatus, errorThrown) {
           console.log(jqXHR);
@@ -134,14 +136,14 @@ const generateModalButton = (modalName,title)=>{
             onClick: function onEachFeature(f, l){
                     // get value from 
                     var isoa2 = $('#countrySelect option:selected').val();
-
+                    countryName = $('#countrySelect option:selected').text();
                     // depending on modal name we call specific functions for specific modals
                     switch(modalName){
                         case 'country_cities':
                             generateCountryModal(isoa2);
                             break;
                         case 'wiki'   :
-                            generateWikiModal(isoa2);
+                            generateWikiModal(countryName);
                             break; 
                         case 'youtube' :
                             generateYoutubeModal(isoa2);
@@ -352,7 +354,47 @@ const sortCitiesPopulation = cities =>{
 }
 
 // generate wiki modal and show to the user
-const generateWikiModal = isoa2 =>{
+const generateWikiModal = countryName =>{
+    countryName = countryName.replace(' ','%20');
+    $.ajax({
+    url: "php/getApi.php",
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      "api_name":'geonames',
+      "q" : countryName,
+    },
+    success: function(result){
+      
+      if (result.status.name == "ok") {
+        $('#wiki-modal-body').html('');
+        
+         wiki =  result['data'].geonames;
+         console.log(wiki.length);
+          $('#wiki-modal-body').append(`<div class="row wiki-result align-items-center">`);
+        for(let i = 0; i < wiki.length; i++){
+            let summary = ""
+            let wiki_link = ""
+            let thumbnailImg = "";
+            summary = wiki[i].summary;
+            wiki_link = wiki[i].wikipediaUrl;
+            thumbnailImg = wiki[i].thumbnailImg;
+            console.log("i: " + i + " " + thumbnailImg);
+            summary += ` <a href='https://${wiki_link}'> Learn More </a>`
+            console.log(i);
+            $('.wiki-result').append(`<div class="summary col-12 col-lg-7"> ${summary}"</div>`);
+            if(typeof(thumbnailImg) != "undefined"){
+                 
+                 $('.wiki-result').append(`<img  class="thumbnailImg d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block col-lg-5" src=${thumbnailImg}></div>`);
+            }
+            else{
+                 $('.wiki-result').append(`<img class="d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block col-lg-5" src="./img/no-image-found.png"></div>`);
+            }
+         
+        }
+      }
+    }
+  })
      $('#wikiModal').modal('show');
 }
 
