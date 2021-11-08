@@ -71,6 +71,13 @@ nav{
     border: 1px solid slategray;
 }
 
+.summary{
+    padding: 2vh 2vw;
+}
+.thumbnailImg{
+    height: 15vh;
+    width: 200px;
+}
 .row span{
     margin: 1vh auto;
 }
