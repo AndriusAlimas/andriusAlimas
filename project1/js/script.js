@@ -137,6 +137,7 @@ const generateModalButton = (modalName,title)=>{
                     // get value from 
                     var isoa2 = $('#countrySelect option:selected').val();
                     countryName = $('#countrySelect option:selected').text();
+                    countryName = countryName.replace(' ','%20');
                     // depending on modal name we call specific functions for specific modals
                     switch(modalName){
                         case 'country_cities':
@@ -146,7 +147,7 @@ const generateModalButton = (modalName,title)=>{
                             generateWikiModal(countryName);
                             break; 
                         case 'youtube' :
-                            generateYoutubeModal(isoa2);
+                            generateYoutubeModal(countryName);
                             break;    
                         case 'calendar' :
                             generateCalendarModal(isoa2);
@@ -355,7 +356,6 @@ const sortCitiesPopulation = cities =>{
 
 // generate wiki modal and show to the user
 const generateWikiModal = countryName =>{
-    countryName = countryName.replace(' ','%20');
     $.ajax({
     url: "php/getApi.php",
     type: 'POST',
@@ -399,10 +399,32 @@ const generateWikiModal = countryName =>{
 }
 
 // generate youtube modal and show to the user
-const generateYoutubeModal = iso2 =>{
+const generateYoutubeModal = country =>{
+     $.ajax({
+    url: "php/getApi.php",
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      "api_name":'youtube',
+      "country" : country
+    },
+   success: function(result){
+       let aboutCountry = ""
+    $("#youtube_result").html("");
+    $('#youtubeModalLabel').html("");
+        video = result['data'].items[0].id.videoId;
+        
+        aboutCountry = country.replace("%20", " ");
+        $('#youtubeModalLabel').append(aboutCountry);
+        $("#youtube_result").append(`<iframe src="https://www.youtube.com/embed/${video}?autoplay=1&controls=0&version=3&enablejsapi=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; modestbranding; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`);
+    }
+     })
    $('#youtubeModal').modal('show');
 }
 
+$( ".youtube-btn" ).click(function() {
+    $("#youtube_result").html("");
+});
 // generate calendar modal and show to the user
 const generateCalendarModal = iso2 =>{
      $('#calendarModal').modal('show');
