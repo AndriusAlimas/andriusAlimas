@@ -87,6 +87,9 @@
           case 'geonames':
             $url = 'http://api.geonames.org/wikipediaSearchJSON?q='.$_REQUEST['q'].'&title='.$_REQUEST['q'].'&maxRows=5&username=andriusAlimas';
             break;
+          case 'youtube':
+            $url = 'https://youtube.googleapis.com/youtube/v3/search?part=snippet&q=About%20Country%20'.$_REQUEST['country'].'&access_token=AIzaSyCs9npKf9bzuxghfYq9cDkNEB6tENxljWM&key=AIzaSyCs9npKf9bzuxghfYq9cDkNEB6tENxljWM';
+           break;
         default:
         $default = true;
         $output['accessToken']= '04yVMx6BriAAM2GxEbC0LLWicl9TJ5qCrka3agfo47w2WkFC99LicZd5yBRpggu8'; // later on we need to encrypt this somehow
