@@ -90,6 +90,9 @@
           case 'youtube':
             $url = 'https://youtube.googleapis.com/youtube/v3/search?part=snippet&q=About%20Country%20'.$_REQUEST['country'].'&access_token=AIzaSyCs9npKf9bzuxghfYq9cDkNEB6tENxljWM&key=AIzaSyCs9npKf9bzuxghfYq9cDkNEB6tENxljWM';
            break;
+           case 'holiday':
+            $url = 'https://calendarific.com/api/v2/holidays?&api_key=a3521b9dca8c30ad00fab540e45ba9c53caa7ffa&country='.$_REQUEST['iso2'].'&year='.$_REQUEST['year'];
+            break;
         default:
         $default = true;
         $output['accessToken']= '04yVMx6BriAAM2GxEbC0LLWicl9TJ5qCrka3agfo47w2WkFC99LicZd5yBRpggu8'; // later on we need to encrypt this somehow
