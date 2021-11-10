@@ -27,6 +27,9 @@
       href="https://fonts.googleapis.com/css2?family=Alegreya+SC:ital,wght@1,500&display=swap"
       rel="stylesheet"
     />
+    <!-- Evo-Calendar style -->
+    <link rel="stylesheet" href="css/evo-calendar.min.css" />
+    <link rel="stylesheet" href="css/evo-calendar.orange-coral.min.css" />
     <!-- Adding custom stylesheet -->
     <link rel="stylesheet" href="css/style.css" />
   </head>
@@ -262,7 +265,7 @@
           <!-- header -->
           <div class="modal-header">
             <h5
-              class="modal-title w-75 display-6 text-center"
+              class="modal-title w-100 display-6 text-center"
               id="youtubeModalLabel"
             ></h5>
             <button
@@ -298,29 +301,30 @@
       aria-labelledby="calendarModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog">
-        <div class="modal-content">
+      <div class="modal-dialog d-flex justify-content-center">
+        <div class="modal-content holiday-modal-content">
           <!-- header -->
           <div class="modal-header">
-            <h5 class="modal-title" id="calendarModalLabel">
-              Calendar Country Holidays & Day Off
-            </h5>
+            <h5
+              class="modal-title w-100 text-center"
+              id="calendarModalLabel"
+            ></h5>
             <button
               type="button"
-              class="btn-close"
+              class="btn-close calendar-close-btn"
               data-bs-dismiss="modal"
               aria-label="Close"
             ></button>
           </div>
           <!-- body -->
-
-          <div class="modal-body">...</div>
+          <div id="calendar"></div>
+          <!-- </div> -->
 
           <!-- footer -->
           <div class="modal-footer">
             <button
               type="button"
-              class="btn btn-secondary"
+              class="btn btn-secondary calendar-close-btn"
               data-bs-dismiss="modal"
             >
               Close
@@ -454,6 +458,7 @@
     <script src="./vendors/bootstrap/bootstrap.min.js"></script>
     <script src="./vendors/leaflet/leaflet.js"></script>
     <script src="./vendors/leaflet/easy-button.min.js"></script>
+    <script src="./js/evo-calendar.min.js"></script>
     <script src="js/script.js"></script>
   </body>
 </html>
