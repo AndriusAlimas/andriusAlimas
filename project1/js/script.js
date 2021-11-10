@@ -13,6 +13,9 @@ $(window).on('load',  () =>{
 // when all html loaded execute this function
 $(document).ready(()=>{
     countryName = "";
+    calendarEventLength = 0;
+    calendarEvents = [];
+    formattedDate = "";
     // All Buttons Modals object name and title, will help to create this modal depending on name property
     // Enter object to create more buttons modals if need it with property name and title
    let myModals = [
@@ -135,7 +138,7 @@ const generateModalButton = (modalName,title)=>{
             title: title,
             onClick: function onEachFeature(f, l){
                     // get value from 
-                    var isoa2 = $('#countrySelect option:selected').val();
+                    isoa2 = $('#countrySelect option:selected').val();
                     countryName = $('#countrySelect option:selected').text();
                     countryName = countryName.replace(' ','%20');
                     // depending on modal name we call specific functions for specific modals
@@ -150,7 +153,7 @@ const generateModalButton = (modalName,title)=>{
                             generateYoutubeModal(countryName);
                             break;    
                         case 'calendar' :
-                            generateCalendarModal(isoa2);
+                            generateCalendarModal(isoa2,countryName);
                             break;    
                         case 'weather_forecast' :
                             generateWeatherModal(isoa2);
@@ -425,9 +428,109 @@ const generateYoutubeModal = country =>{
 $( ".youtube-btn" ).click(function() {
     $("#youtube_result").html("");
 });
+
+$(".calendar-close-btn").click(()=>{
+    // destroy
+$('#calendar').evoCalendar('destroy');
+calendarEvents = [];
+});
+
+// selectYear
+$('#calendar').on('selectYear', function(event, activeYear) {
+    console.log(calendarEvents);
+            console.log(activeYear);
+            console.log(countryName);
+            console.log(isoa2);
+            // removeCalendarEvent
+            // for(let i = 0; i <  calendarEventLength;i++){
+            //     $('#calendar').evoCalendar('removeCalendarEvent',`event${i}`);
+            // }
+            // var active_date = $('#calendar').evoCalendar('getActiveDate');
+            // console.log(active_date);
+               // destroy
+        // $('#calendar').evoCalendar('destroy');
+        // getActiveDate
+        // selectDate
+        //  $('#calendar').evoCalendar('selectDate', formattedDate);
+        
+        // console.log(formattedDate);
+        
+    //      addCalendarEvents(activeYear,isoa2,countryName);
+    
+   
+    });
+
 // generate calendar modal and show to the user
-const generateCalendarModal = iso2 =>{
+const generateCalendarModal = (iso2,countryName) =>{
+    addCalendarEvents(new Date().getFullYear()-1,iso2,countryName);
+    addCalendarEvents(new Date().getFullYear(),iso2,countryName);
+    addCalendarEvents(new Date().getFullYear()+1,iso2,countryName);
+    
      $('#calendarModal').modal('show');
+}
+
+
+// Add calendar Events in current year
+const addCalendarEvents = (year,iso2,countryName) =>{
+    $.ajax({
+        url: "php/getApi.php",
+        type: 'POST',
+        dataType: 'json',
+        data: {
+          "api_name":'holiday',
+          "iso2" : iso2,
+          "year" : year,
+        },
+        success: function(result){
+            let country = "";
+            countryName = countryName.replace("%20", " ");
+            $("#calendarModalLabel").html("");
+            $("#holiday_table").html("");
+    
+            $("#calendarModalLabel").html(`Holidays in ${country}`);
+            let holidays = result['data'].response.holidays;
+            
+            const monthNames = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+            ];
+            
+            // clearArray(calendarEvents);
+            // console.log(calendarEvents);
+          
+            holidays.forEach((holiday,index) => {
+                 let dayIso = holiday.date.iso;
+                 let date = new Date(dayIso);
+                 let month = monthNames[date.getMonth()];
+                 formattedDate = month + "/" + date.getDay() + "/" + date.getFullYear();
+                 let event = {
+                    id: `event${index}`,
+                    name: holiday.name,
+                    date: formattedDate,
+                    description: holiday.description,
+                    type: "holiday"
+                 };
+                 calendarEvents.push(event);   
+ 
+            }
+            );
+           
+            
+            calendarEventLength = holidays.length;
+            console.log(calendarEventLength);
+            console.log("Calendars events : ", calendarEvents.length);
+           
+            
+
+            // add multiple events    
+            $('#calendar').evoCalendar({
+                calendarEvents:calendarEvents
+            })
+           
+           }
+        })
+        if(calendarEventLength < calendarEvents.length){
+            
+        }
 }
 
 // generate weather modal and show to the user
