@@ -153,7 +153,7 @@ const generateModalButton = (modalName,title)=>{
                             generateCalendarModal(isoa2,countryName);
                             break;    
                         case 'weather_forecast' :
-                            generateWeatherModal(isoa2);
+                            generateWeatherModal(countryName);
                             break;    
                         case 'language' :
                             generateLanguageModal(isoa2);
@@ -370,7 +370,7 @@ const generateWikiModal = countryName =>{
         $('#wiki-modal-body').html('');
         
          wiki =  result['data'].geonames;
-         console.log(wiki.length);
+
           $('#wiki-modal-body').append(`<div class="row wiki-result align-items-center">`);
         for(let i = 0; i < wiki.length; i++){
             let summary = ""
@@ -495,7 +495,27 @@ const addCalendarEvents = (year,iso2,countryName) =>{
 }
 
 // generate weather modal and show to the user
-const generateWeatherModal = iso2 =>{
+const generateWeatherModal = country =>{
+    $("#citySelect").html("");
+    country = country.replace("%20", " ");
+     let settings = {
+        "url": "https://countriesnow.space/api/v0.1/countries/cities",
+        "method": "POST",
+        "timeout": 0,
+        "data": { 
+            "country": country
+        },
+      };
+      $.ajax(settings).done(function (response) {
+        console.log(response.data);
+        response.data.forEach(function (data) {
+            console.log(data);
+            $("<option>",{
+              value: data,
+              text: data
+            }).appendTo("#citySelect");
+          })
+      });
      $('#weather_forecastModal').modal('show');
 }
 
