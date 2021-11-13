@@ -13,9 +13,6 @@ $(window).on('load',  () =>{
 // when all html loaded execute this function
 $(document).ready(()=>{
     countryName = "";
-    calendarEventLength = 0;
-    calendarEvents = [];
-    formattedDate = "";
     // All Buttons Modals object name and title, will help to create this modal depending on name property
     // Enter object to create more buttons modals if need it with property name and title
    let myModals = [
@@ -432,46 +429,20 @@ $( ".youtube-btn" ).click(function() {
 $(".calendar-close-btn").click(()=>{
     // destroy
 $('#calendar').evoCalendar('destroy');
-calendarEvents = [];
 });
 
-// selectYear
-$('#calendar').on('selectYear', function(event, activeYear) {
-    console.log(calendarEvents);
-            console.log(activeYear);
-            console.log(countryName);
-            console.log(isoa2);
-            // removeCalendarEvent
-            // for(let i = 0; i <  calendarEventLength;i++){
-            //     $('#calendar').evoCalendar('removeCalendarEvent',`event${i}`);
-            // }
-            // var active_date = $('#calendar').evoCalendar('getActiveDate');
-            // console.log(active_date);
-               // destroy
-        // $('#calendar').evoCalendar('destroy');
-        // getActiveDate
-        // selectDate
-        //  $('#calendar').evoCalendar('selectDate', formattedDate);
-        
-        // console.log(formattedDate);
-        
-    //      addCalendarEvents(activeYear,isoa2,countryName);
-    
-   
-    });
 
 // generate calendar modal and show to the user
 const generateCalendarModal = (iso2,countryName) =>{
-    addCalendarEvents(new Date().getFullYear()-1,iso2,countryName);
-    addCalendarEvents(new Date().getFullYear(),iso2,countryName);
-    addCalendarEvents(new Date().getFullYear()+1,iso2,countryName);
-    
+    addCalendarEvents(new Date().getFullYear(),iso2,countryName);  
      $('#calendarModal').modal('show');
 }
 
 
 // Add calendar Events in current year
 const addCalendarEvents = (year,iso2,countryName) =>{
+    $('.calendar-events>.event-header>p').html('');
+    $('.calendar-events>.event-header>p').append("formattedDate");
     $.ajax({
         url: "php/getApi.php",
         type: 'POST',
@@ -483,6 +454,7 @@ const addCalendarEvents = (year,iso2,countryName) =>{
         },
         success: function(result){
             let country = "";
+            let calendarEvents = [];
             countryName = countryName.replace("%20", " ");
             $("#calendarModalLabel").html("");
             $("#holiday_table").html("");
@@ -493,10 +465,7 @@ const addCalendarEvents = (year,iso2,countryName) =>{
             const monthNames = ["January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"
             ];
-            
-            // clearArray(calendarEvents);
-            // console.log(calendarEvents);
-          
+           
             holidays.forEach((holiday,index) => {
                  let dayIso = holiday.date.iso;
                  let date = new Date(dayIso);
@@ -507,30 +476,22 @@ const addCalendarEvents = (year,iso2,countryName) =>{
                     name: holiday.name,
                     date: formattedDate,
                     description: holiday.description,
-                    type: "holiday"
+                    type: "all",
+                    everyYear:true,
                  };
                  calendarEvents.push(event);   
  
             }
-            );
-           
-            
-            calendarEventLength = holidays.length;
-            console.log(calendarEventLength);
-            console.log("Calendars events : ", calendarEvents.length);
-           
-            
-
-            // add multiple events    
+            );      
+            // setup calendar   
             $('#calendar').evoCalendar({
+                theme:'Orange Coral',
                 calendarEvents:calendarEvents
             })
-           
            }
         })
-        if(calendarEventLength < calendarEvents.length){
-            
-        }
+     
+        $('#calendarModal').modal('show');
 }
 
 // generate weather modal and show to the user
