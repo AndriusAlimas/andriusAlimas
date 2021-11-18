@@ -496,8 +496,17 @@ const addCalendarEvents = (year,iso2,countryName) =>{
 
 // generate weather modal and show to the user
 const generateWeatherModal = country =>{
+    // erase all labels in forecast module
     $("#citySelect").html("");
+    $('#weather_forecastModalLabel').html("");
+
+    // convert country name to readable format with space
     country = country.replace("%20", " ");
+
+    // get header label
+    $('#weather_forecastModalLabel').append("Weather in " + country);
+
+    // get all cities of this country
      let settings = {
         "url": "https://countriesnow.space/api/v0.1/countries/cities",
         "method": "POST",
@@ -506,16 +515,32 @@ const generateWeatherModal = country =>{
             "country": country
         },
       };
+
+      // populate cites value and text in select element
       $.ajax(settings).done(function (response) {
-        console.log(response.data);
+        // console.log(response.data);
         response.data.forEach(function (data) {
-            console.log(data);
             $("<option>",{
               value: data,
               text: data
             }).appendTo("#citySelect");
           })
       });
+
+      // ajax call
+      $.ajax({
+        url: "php/getApi.php",
+        type: 'POST',
+        dataType: 'json',
+        data: {
+          "api_name":'open_weather_map',
+          "city" : "London",
+        },
+        success: function(result){
+            console.log(result.data);
+        }
+    });
+      // show the modal
      $('#weather_forecastModal').modal('show');
 }
 
