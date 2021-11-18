@@ -342,13 +342,12 @@
       aria-labelledby="weather_forecastModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog">
-        <div class="modal-content">
+      <div class="modal-dialog d-flex justify-content-center">
+        <div class="modal-content holiday-modal-content">
           <!-- header -->
-          <div class="modal-header">
-            <h5 class="modal-title" id="weather_forecastModalLabel">
-              Weather Forecast
-            </h5>
+          <div class="modal-header flex-column">
+            <h5 class="modal-title" id="weather_forecastModalLabel"></h5>
+            <br />
             <!-- select countries -->
             <select id="citySelect" name="citySelect"></select>
             <button
@@ -360,7 +359,24 @@
           </div>
           <!-- body -->
 
-          <div class="modal-body">...</div>
+          <div class="modal-body" id="forecast_body">
+            <table class="table table-hover table-success table-responsive">
+              <thead class="table-warning">
+                <tr>
+                  <th scope="col">Date</th>
+                  <th scope="col">Temp</th>
+                  <th scope="col">Feels Like</th>
+                  <th scope="col">Temp Max / Min</th>
+                  <th scope="col">Humidity</th>
+                  <th scope="col">Weather Condition</th>
+                  <th scope="col">Wind-deg</th>
+                  <th scope="col">Wind-gust</th>
+                  <th scope="col">Wind-speed</th>
+                </tr>
+              </thead>
+              <tbody class="weather_result"></tbody>
+            </table>
+          </div>
 
           <!-- footer -->
           <div class="modal-footer">
