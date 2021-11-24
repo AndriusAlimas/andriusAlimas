@@ -354,6 +354,9 @@ const sortCitiesPopulation = cities =>{
     }
 }
 
+// Kelvin to Celsius convertion
+const kelvinToCelsius = kelvin => kelvin-273.15;
+
 // generate wiki modal and show to the user
 const generateWikiModal = countryName =>{
     $.ajax({
@@ -537,13 +540,43 @@ const generateWeatherModal = country =>{
           "city" : "London",
         },
         success: function(result){
-            console.log(result.data);
+            console.log(result.data.list);
+            result.data.list.forEach(function(data){
+                // get date info 
+                let date = data.dt_txt;
+                let full_date = date.substr(0,11);
+                let time = formatAMPM(new Date(date));
+                date = full_date + " * " + time + " * ";
+
+                // get temparature info
+                let temp = kelvinToCelsius(data.main.temp).toFixed(2);
+
+                let feels_like = kelvinToCelsius(data.main.feels_like).toFixed(2);
+                $('.weather_result').append(`<tr>
+                <td>${date}</td>
+                <td>${temp} °C</td>
+                <td>${feels_like} °C</td>
+                </tr>`);
+            });
+        
+           
         }
     });
       // show the modal
      $('#weather_forecastModal').modal('show');
 }
 
+
+function formatAMPM(date) {
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0'+minutes : minutes;
+    var strTime = hours + ':' + minutes + ' ' + ampm;
+    return strTime;
+  }
 // generate language modal and show to the user
 const generateLanguageModal = iso2 =>{
     $('#languageModal').modal('show');
