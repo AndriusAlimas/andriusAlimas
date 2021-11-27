@@ -100,6 +100,10 @@ iframe{
     margin: 1vh auto;
 }
 
+.wind_direction{
+    width: 30%;
+}
+
 .modal-content{
     width: auto;
     background-image: linear-gradient(to left bottom, #dcdc7b, #dfd366, #e4c951, #eabe3c, #f0b225);
