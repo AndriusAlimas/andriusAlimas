@@ -37,14 +37,9 @@ $(document).ready(()=>{
             title: 'Get Weather Forecast'
         },
         {
-            name: 'language',
-            title: 'Get Words For This Country Language'
-        },
-        {
             name: 'covid',
             title: 'Get Covid Information'
         }
-
     ];
 
     $.ajax({
@@ -154,10 +149,7 @@ const generateModalButton = (modalName,title)=>{
                             break;    
                         case 'weather_forecast' :
                             generateWeatherModal(countryName);
-                            break;    
-                        case 'language' :
-                            generateLanguageModal(isoa2);
-                            break;    
+                            break;      
                         case 'covid' :
                             generateCovidModal(isoa2);
                             break;   
@@ -440,9 +432,6 @@ $( ".weather-close-btn" ).click(function() {
     $('.weather_result').html("");
 });
 
-
-
-
 // generate calendar modal and show to the user
 const generateCalendarModal = (iso2,countryName) =>{
     addCalendarEvents(new Date().getFullYear(),iso2,countryName);  
@@ -557,10 +546,6 @@ const formatAMPM = date => {
 
 //   Convert Meters Per Second to Miles Per Hour
 const convertMsToMph = ms => Math.round(ms * 2.236936);
-// generate language modal and show to the user
-const generateLanguageModal = iso2 =>{
-    $('#languageModal').modal('show');
-}
 
 // generate covid modal and show to the user
 const generateCovidModal = iso2 =>{
@@ -608,7 +593,6 @@ $('#citySelect').change(function() {
           "city" : city.replace(/\s/g, "%20"),
         },
         success: function(result){
-            console.log(result['data']);
             result.data.list.forEach(function(data){
                 // get date info 
                 let date = data.dt_txt;
