@@ -200,6 +200,7 @@ const generateCountryModal = isoa2 =>{
               "isoa2" : isoa2
             },
         success: function(result){
+            console.log(result['data']);
             // erase fields
             $(".languages").html("");
             $(".topbigcities").html("");
@@ -368,7 +369,6 @@ const generateWikiModal = countryName =>{
       "q" : countryName,
     },
     success: function(result){
-      
       if (result.status.name == "ok") {
         $('#wiki-modal-body').html('');
         
@@ -433,6 +433,14 @@ $(".calendar-close-btn").click(()=>{
     // destroy
 $('#calendar').evoCalendar('destroy');
 });
+$( ".weather-close-btn" ).click(function() {
+    // erase all labels in forecast module
+    $("#citySelect").html("");
+    $('#weather_forecastModalLabel').html("");
+    $('.weather_result').html("");
+});
+
+
 
 
 // generate calendar modal and show to the user
@@ -529,54 +537,26 @@ const generateWeatherModal = country =>{
             }).appendTo("#citySelect");
           })
       });
-
-      // ajax call
-      $.ajax({
-        url: "php/getApi.php",
-        type: 'POST',
-        dataType: 'json',
-        data: {
-          "api_name":'open_weather_map',
-          "city" : "London",
-        },
-        success: function(result){
-            console.log(result.data.list);
-            result.data.list.forEach(function(data){
-                // get date info 
-                let date = data.dt_txt;
-                let full_date = date.substr(0,11);
-                let time = formatAMPM(new Date(date));
-                date = full_date + " * " + time + " * ";
-
-                // get temparature info
-                let temp = kelvinToCelsius(data.main.temp).toFixed(2);
-
-                let feels_like = kelvinToCelsius(data.main.feels_like).toFixed(2);
-                $('.weather_result').append(`<tr>
-                <td>${date}</td>
-                <td>${temp} °C</td>
-                <td>${feels_like} °C</td>
-                </tr>`);
-            });
-        
-           
-        }
-    });
+            
+     
       // show the modal
      $('#weather_forecastModal').modal('show');
 }
 
 
-function formatAMPM(date) {
-    var hours = date.getHours();
-    var minutes = date.getMinutes();
-    var ampm = hours >= 12 ? 'pm' : 'am';
+const formatAMPM = date => {
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    let ampm = hours >= 12 ? 'pm' : 'am';
     hours = hours % 12;
     hours = hours ? hours : 12; // the hour '0' should be '12'
     minutes = minutes < 10 ? '0'+minutes : minutes;
-    var strTime = hours + ':' + minutes + ' ' + ampm;
+    let strTime = hours + ':' + minutes + ' ' + ampm;
     return strTime;
   }
+
+//   Convert Meters Per Second to Miles Per Hour
+const convertMsToMph = ms => Math.round(ms * 2.236936);
 // generate language modal and show to the user
 const generateLanguageModal = iso2 =>{
     $('#languageModal').modal('show');
@@ -600,7 +580,6 @@ $('#countrySelect').change(function() {
             iso: iso_a2
         },
         success: function(result) {
-
             if (result.status.name == "ok") {
                  drawCountryBorders(result['data'],iso_a2);
                  // add all modal buttons to the map
@@ -610,6 +589,69 @@ $('#countrySelect').change(function() {
         },
         error: function(jqXHR, textStatus, errorThrown) {
             console.log(jqXHR);
+        }
+    });
+});
+
+// Event trigger select change of city in weather module
+$('#citySelect').change(function() {
+    $('.weather_result').html("");
+    let city = $('#citySelect option:selected').val();
+    
+     // ajax call
+     $.ajax({
+        url: "php/getApi.php",
+        type: 'POST',
+        dataType: 'json',
+        data: {
+          "api_name":'open_weather_map',
+          "city" : city.replace(/\s/g, "%20"),
+        },
+        success: function(result){
+            console.log(result['data']);
+            result.data.list.forEach(function(data){
+                // get date info 
+                let date = data.dt_txt;
+                let full_date = date.substr(0,11);
+                let time = formatAMPM(new Date(date));
+                date = full_date + " * " + time + " * ";
+
+                // get temparature info
+                let temp =  Math.round(kelvinToCelsius(data.main.temp));
+                let tempMax =  Math.round(kelvinToCelsius(data.main.temp_max));
+                let tempMin =  Math.round(kelvinToCelsius(data.main.temp_min));
+                let temp_min_max = tempMax + "°C / " + tempMin;
+                let feels_like =  Math.round(kelvinToCelsius(data.main.feels_like));
+
+                // get humidity
+                let humidity = data.main.humidity;
+
+                // get weather condition
+                let icon = data.weather[0].icon;
+                let description = data.weather[0].description;
+                let weather = `<img src="http://openweathermap.org/img/wn/${icon}@2x.png" alt="${description}" title="${description}">`;
+
+                // get wind direction
+                let rotate = 35 - data.wind.deg;
+                let wind_direction = `<img src="./img/wind_arrow.png" class="wind_direction" style="transform:rotate(${rotate}deg)">`;
+
+                // get wind gust and wind speed
+                let wind_gust = Math.round(data.wind.gust);
+                let wind_speed = convertMsToMph(data.wind.speed);
+
+                // populate weather results 
+                $('.weather_result').append(`<tr class="align-middle">
+                <td>${date}</td>
+                <td>${temp} °C</td>
+                <td>${feels_like} °C</td>
+                <td>${temp_min_max} °C</td>
+                <td>${humidity} %</td>
+                <td>${weather}</td>
+                <td>${wind_direction}</td>
+                <td>${wind_gust} m/sec</td>
+                <td>${wind_speed} mph</td>
+                </tr>`);
+            });
         }
     });
 });
