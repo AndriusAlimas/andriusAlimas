@@ -129,6 +129,43 @@
                     echo json_encode($output);
                     exit;
                 }
+                break;
+            case 'covid_19':
+                $curl = curl_init();
+
+                curl_setopt_array($curl, [
+                    CURLOPT_URL => "https://coronavirus-map.p.rapidapi.com/v1/spots/month?region=".$_REQUEST['country'],
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_ENCODING => "",
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 30,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => "GET",
+                    CURLOPT_HTTPHEADER => [
+                        "x-rapidapi-host: coronavirus-map.p.rapidapi.com",
+                        "x-rapidapi-key: 9b655893f9mshb01f5c9d312d303p1a5424jsncf783eff3535"
+                    ],
+                ]);
+                
+                $response = curl_exec($curl);
+                $err = curl_error($curl);
+                
+                curl_close($curl);
+                
+                if ($err) {
+                    echo "cURL Error #:" . $err;
+                } else {
+                $decode = json_decode($response,true);
+                $output['status']['code'] = "200";
+                $output['status']['name'] = "ok";
+                $output['status']['description'] = "success";
+                $output['status']['returnedIn'] = intval((microtime(true) - $executionStartTime) * 1000) . " ms";
+                $output[$data] = $decode;   
+                    header('Content-Type: application/json; charset=UTF-8');
+                    echo json_encode($output);
+                    exit;
+                }
         default:
         $default = true;
         $output['accessToken']= '04yVMx6BriAAM2GxEbC0LLWicl9TJ5qCrka3agfo47w2WkFC99LicZd5yBRpggu8'; // later on we need to encrypt this somehow
