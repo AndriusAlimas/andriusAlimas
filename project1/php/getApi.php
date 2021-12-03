@@ -11,9 +11,7 @@
      $usePage = false;
      $data = 'data';
      $default = false;
-    ini_set('display_errors', 'On');
-    error_reporting(E_ALL);
-
+   
     $executionStartTime = microtime(true);
     
     // receive api name, then we use in switch 
@@ -23,6 +21,8 @@
         $api_name = "no name";
     }
 
+    $curl = curl_init();
+    
     switch($api_name){
        case 'countryBorders':
             $url = 'https://'.$server.'/project1/json/countryBorders.geo.json';
@@ -36,136 +36,48 @@
         case 'countries_cities':   
               $showCities = true; 
         case 'countries_details':
-            // if you want cities change curl to different call
             if($showCities){
                 $url = 'https://countries-cities.p.rapidapi.com/location/country/'.$_REQUEST['isoa2'].'/city/list?population='.$_REQUEST['population'];
             }
             else{
                 $url = 'https://countries-cities.p.rapidapi.com/location/country/'.$_REQUEST['isoa2'];
             }
-
             if($usePage){
                 $url = 'https://countries-cities.p.rapidapi.com/location/country/'.$_REQUEST['isoa2'].'/city/list?page='.$_REQUEST['page'].'&per_page=100&population='.$_REQUEST['population'];
             }
 
-            $curl = curl_init();
-            curl_setopt_array($curl, [ 
-                CURLOPT_URL => $url ,
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_ENCODING => "",
-                CURLOPT_MAXREDIRS => 10,
-                CURLOPT_TIMEOUT => 30,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                CURLOPT_CUSTOMREQUEST => "GET",
-                CURLOPT_HTTPHEADER => [
-                    "x-rapidapi-host: countries-cities.p.rapidapi.com",
-                    "x-rapidapi-key: 9b655893f9mshb01f5c9d312d303p1a5424jsncf783eff3535"
-                ],
-            ]);
-            
-            $response = curl_exec($curl);
-                $err = curl_error($curl);
+            $header = [
+                "x-rapidapi-host: countries-cities.p.rapidapi.com",
+                "x-rapidapi-key: 9b655893f9mshb01f5c9d312d303p1a5424jsncf783eff3535"
+            ];  
 
-                curl_close($curl);
-
-                if ($err) {
-                    echo "cURL Error #:" . $err;
-                } else {
-                    $decode = json_decode($response,true);  
-
-                    
-                $output['status']['code'] = "200";
-                $output['status']['name'] = "ok";
-                $output['status']['description'] = "success";
-                $output['status']['returnedIn'] = intval((microtime(true) - $executionStartTime) * 1000) . " ms";
-                $output[$data] = $decode;   
-                    header('Content-Type: application/json; charset=UTF-8');
-                    echo json_encode($output);
-                    exit;
-                }
+            finalizeRequest($curl,$url,$header);
           case 'geonames':
             $url = 'http://api.geonames.org/wikipediaSearchJSON?q='.$_REQUEST['q'].'&title='.$_REQUEST['q'].'&maxRows=5&username=andriusAlimas';
             break;
           case 'youtube':
             $url = 'https://youtube.googleapis.com/youtube/v3/search?part=snippet&q=About%20Country%20'.$_REQUEST['country'].'&access_token=AIzaSyCs9npKf9bzuxghfYq9cDkNEB6tENxljWM&key=AIzaSyCs9npKf9bzuxghfYq9cDkNEB6tENxljWM';
            break;
-           case 'holiday':
+          case 'holiday':
             $url = 'https://calendarific.com/api/v2/holidays?&api_key=a3521b9dca8c30ad00fab540e45ba9c53caa7ffa&country='.$_REQUEST['iso2'].'&year='.$_REQUEST['year'];
             break;
             case 'open_weather_map':
-                $curl = curl_init();
+                $header = [
+                    "x-rapidapi-host: community-open-weather-map.p.rapidapi.com",
+                    "x-rapidapi-key: 9b655893f9mshb01f5c9d312d303p1a5424jsncf783eff3535"
+                ];
 
-                curl_setopt_array($curl, [
-                    CURLOPT_URL => "https://community-open-weather-map.p.rapidapi.com/forecast?q=".$_REQUEST['city'],
-                    CURLOPT_RETURNTRANSFER => true,
-                    CURLOPT_FOLLOWLOCATION => true,
-                    CURLOPT_ENCODING => "",
-                    CURLOPT_MAXREDIRS => 10,
-                    CURLOPT_TIMEOUT => 30,
-                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                    CURLOPT_CUSTOMREQUEST => "GET",
-                    CURLOPT_HTTPHEADER => [
-                        "x-rapidapi-host: community-open-weather-map.p.rapidapi.com",
-                        "x-rapidapi-key: 9b655893f9mshb01f5c9d312d303p1a5424jsncf783eff3535"
-                    ],
-                ]);
+                $url = "https://community-open-weather-map.p.rapidapi.com/forecast?q=".$_REQUEST['city'];
                 
-                $response = curl_exec($curl);
-                $err = curl_error($curl);
-                
-                curl_close($curl);
-                
-                if ($err) {
-                    echo "cURL Error #:" . $err;
-                } else {
-                $decode = json_decode($response,true);
-                $output['status']['code'] = "200";
-                $output['status']['name'] = "ok";
-                $output['status']['description'] = "success";
-                $output['status']['returnedIn'] = intval((microtime(true) - $executionStartTime) * 1000) . " ms";
-                $output[$data] = $decode;   
-                    header('Content-Type: application/json; charset=UTF-8');
-                    echo json_encode($output);
-                    exit;
-                }
+                finalizeRequest($curl,$url,$header);  
                 break;
             case 'covid_19':
-                $curl = curl_init();
-
-                curl_setopt_array($curl, [
-                    CURLOPT_URL => "https://coronavirus-map.p.rapidapi.com/v1/spots/month?region=".$_REQUEST['country'],
-                    CURLOPT_RETURNTRANSFER => true,
-                    CURLOPT_FOLLOWLOCATION => true,
-                    CURLOPT_ENCODING => "",
-                    CURLOPT_MAXREDIRS => 10,
-                    CURLOPT_TIMEOUT => 30,
-                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                    CURLOPT_CUSTOMREQUEST => "GET",
-                    CURLOPT_HTTPHEADER => [
-                        "x-rapidapi-host: coronavirus-map.p.rapidapi.com",
-                        "x-rapidapi-key: 9b655893f9mshb01f5c9d312d303p1a5424jsncf783eff3535"
-                    ],
-                ]);
-                
-                $response = curl_exec($curl);
-                $err = curl_error($curl);
-                
-                curl_close($curl);
-                
-                if ($err) {
-                    echo "cURL Error #:" . $err;
-                } else {
-                $decode = json_decode($response,true);
-                $output['status']['code'] = "200";
-                $output['status']['name'] = "ok";
-                $output['status']['description'] = "success";
-                $output['status']['returnedIn'] = intval((microtime(true) - $executionStartTime) * 1000) . " ms";
-                $output[$data] = $decode;   
-                    header('Content-Type: application/json; charset=UTF-8');
-                    echo json_encode($output);
-                    exit;
-                }
+                $header = [
+                    "x-rapidapi-host: coronavirus-map.p.rapidapi.com",
+                    "x-rapidapi-key: 9b655893f9mshb01f5c9d312d303p1a5424jsncf783eff3535"
+                ];
+                $url = "https://coronavirus-map.p.rapidapi.com/v1/spots/month?region=".$_REQUEST['country'];
+                finalizeRequest($curl,$url,$header);  
         default:
         $default = true;
         $output['accessToken']= '04yVMx6BriAAM2GxEbC0LLWicl9TJ5qCrka3agfo47w2WkFC99LicZd5yBRpggu8'; // later on we need to encrypt this somehow
@@ -173,14 +85,12 @@
     }
     
     if(!$default){
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_URL,$url);
-    
-        $result=curl_exec($ch);
-        curl_close($ch);
-        $decode = json_decode($result,true);  
+         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+         curl_setopt($curl, CURLOPT_URL,$url);
+         $result=curl_exec($curl);
+         curl_close($curl);
+         $decode = json_decode($result,true);  
     }else{
         $decode = json_decode($output['accessToken'],true);  
     }
@@ -198,4 +108,29 @@
 }
     header('Content-Type: application/json; charset=UTF-8');
     echo json_encode($output);
+
+function finalizeRequest($curl,$url,$header) {
+    
+    curl_setopt_array($curl, [ 
+        CURLOPT_URL => $url ,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_HTTPHEADER => $header,
+    ]);
+
+    $response = curl_exec($curl);
+    $err = curl_error($curl);
+    
+    curl_close($curl);
+    
+    if ($err) {
+        echo "cURL Error #:" . $err;
+    } else {
+    $decode = json_decode($response,true);
+    $output['data'] = $decode;   
+        header('Content-Type: application/json; charset=UTF-8');
+        echo json_encode($output);
+        exit;
+    }
+}   
 ?>
