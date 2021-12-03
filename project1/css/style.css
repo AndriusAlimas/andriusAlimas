@@ -6,15 +6,9 @@
     box-sizing: border-box;
 }
  /* default style  */
-nav, main{
-    opacity: 0.2;
-}
 body{
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-size: 16px;
-    margin: 0;
-    background: #fff;
-    font-family: 'Alegreya SC', serif;
 }
 
 header{
@@ -27,13 +21,11 @@ img{
 
 /* our navbar */
 nav{
-    height: 10vh;
     position: absolute;
     left: 0;
     right: 0;
     top: 10%;
     margin: 20px auto;
-    max-width: 400px;
     text-align: center;
     padding: 10px;
     z-index: 100;
@@ -45,12 +37,9 @@ nav{
     height: 100vh;
     z-index: 1;
 }
+
 /* select */
 #countrySelect{
-    position: fixed;
-    top: 35%;
-    right: 0;
-    margin: 1vh 1vw;
     font-weight: bold;
     cursor: pointer;
     border-radius: 20%;
@@ -60,15 +49,6 @@ nav{
     color: #efefef;
     padding: 10px;
     text-align: center;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-}
-
-#details{
-    font-size: large;
-    padding: 2vh 2vw;
-    border: 1px solid slategray;
 }
 
 #calendar {

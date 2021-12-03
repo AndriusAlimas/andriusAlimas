@@ -56,8 +56,7 @@ $(document).ready(()=>{
             text: feature.properties.name
           }).appendTo("#countrySelect");
         })
-        sortCountries();  
-
+        sortCountries(); // sort countries   
         // generate all button modals
       modalButtons = generateAllModalsButton(myModals);
       }
@@ -65,6 +64,7 @@ $(document).ready(()=>{
 });
 
 // ************************** FUNCTIONS ************************
+
 // Sort Countries alphabetical order
 const  sortCountries = () =>{
     $("#countrySelect").append($("#countrySelect option")
@@ -132,7 +132,7 @@ const generateModalButton = (modalName,title)=>{
                     // get value from 
                     isoa2 = $('#countrySelect option:selected').val();
                     countryName = $('#countrySelect option:selected').text();
-                    countryName = encodeURIComponent(countryName);
+                    countryName = encodeURIComponent(countryName); // encode 
                     // depending on modal name we call specific functions for specific modals
                     switch(modalName){
                         case 'country_cities':
@@ -154,22 +154,21 @@ const generateModalButton = (modalName,title)=>{
                             generateCovidModal(countryName);
                             break;   
                     }
-                    
             }
         }]
     });
 }
 
-const generateAllModalsButton = (modals) =>{
-    buttons= [];
+// generate all modals buttons 
+const generateAllModalsButton = modals =>{
+    let buttons= [];
     modals.forEach(function (modal) {
        buttons.push(generateModalButton(modal.name,modal.title));
-
     });
     return buttons;
 }
 
-// draw country borders
+// draw country borders polygons
 const drawCountryBorders = (feature_collection, iso_a2) =>{
     countryBorderLayer.clearLayers(); // clear layer to redraw new 
 
@@ -180,6 +179,232 @@ const drawCountryBorders = (feature_collection, iso_a2) =>{
     L.geoJSON(countryGeoJSONBorder).addTo(countryBorderLayer);  
 }
 
+// populate table cities, depending on cities population
+const populateTableCities = cities =>{
+    let topBigCities = [];
+    let topSmallCities = [];
+    let topSmallCitiesLimit = [];
+    let className = ".topsmallcities";
+
+    // sorting big cities 
+    for(city in cities){
+        if(cities[city].population > 1000000){
+        topBigCities.push(cities[city]);
+      }
+    }
+    sortCitiesPopulation(topBigCities);
+
+    // sorting small cities 
+    for(city in cities){
+        if(cities[city].population >20000 && cities[city].population < 1000000){
+        topSmallCities.push(cities[city]);
+      }
+    }     
+    sortCitiesPopulation(topSmallCities); 
+    
+    // limiting small cities only show 100 on the table
+    for(let i = 0;i< topSmallCities.length;i++){
+        topSmallCitiesLimit.push(topSmallCities[i]);
+        if(i == 99){
+            break;
+        }
+    }
+    // draw tables by giving small and big cities results
+    drawCitiesTable(topSmallCitiesLimit,className);
+
+    if(topBigCities[0] != null && topBigCities[0].population > 1000000){
+      className = ".topbigcities";
+           drawCitiesTable(topBigCities,className);
+    }
+} 
+
+// function that makes number more readable with comma every third digits
+const numberWithCommas = number =>{
+    return number.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+}
+
+// function that draw city table by giving result
+const drawCitiesTable = (cities,className) =>{
+    let id = 0;
+    let population = 0;
+    let name = ""
+    if(cities != null){
+         for(city in cities){
+        id++;
+        population = cities[city].population;
+        name = cities[city].name;
+        $(`${className}`).append("<tr><th scope='row'>"+ id + "</th><td>" + name + "</td><td>" + numberWithCommas(population) + "</td></tr>");
+    }   
+    }  
+}
+
+// sorting cities by population
+const sortCitiesPopulation = cities =>{
+    if(cities != null){
+ 
+        cities.sort(function (a, b) {
+            return b.population - a.population;
+        });
+    }
+}
+
+// Kelvin to Celsius convertion
+const kelvinToCelsius = kelvin => kelvin-273.15;
+
+// format time in AM or PM
+const formatAMPM = date => {
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    let ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0'+minutes : minutes;
+    let strTime = hours + ':' + minutes + ' ' + ampm;
+    return strTime;
+  }
+
+// Convert Meters Per Second to Miles Per Hour
+const convertMsToMph = ms => Math.round(ms * 2.236936);
+
+// Event trigger select change
+$('#countrySelect').change(function() {
+    let iso_a2 = $('#countrySelect option:selected').val();
+    
+    $.ajax({
+        url: "php/getApi.php",
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            "api_name": "countryBorders",
+            iso: iso_a2
+        },
+        success: function(result) {
+            if (result.status.name == "ok") {
+                 drawCountryBorders(result['data'],iso_a2);
+                 // add all modal buttons to the map
+                 modalButtons.forEach(modal => modal.addTo(map));
+            }
+    
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.log(jqXHR);
+        }
+    });
+});
+
+// Event trigger select change of city in weather module
+$('#citySelect').change(() =>{
+    // when changing needs to refresh data
+    $('.weather_result').html("");
+
+    // get city name
+    let city = $('#citySelect option:selected').val();
+    
+     // ajax call
+     $.ajax({
+        url: "php/getApi.php",
+        type: 'POST',
+        dataType: 'json',
+        data: {
+          "api_name":'open_weather_map',
+          "city" : encodeURIComponent(city),
+        },
+        success: function(result){
+            result.data.list.forEach(function(data){
+                // get date info 
+                let date = data.dt_txt;
+                let full_date = date.substr(0,11);
+                let time = formatAMPM(new Date(date));
+                date = full_date + " * " + time + " * ";
+
+                // get temparature info
+                let temp =  Math.round(kelvinToCelsius(data.main.temp));
+                let tempMax =  Math.round(kelvinToCelsius(data.main.temp_max));
+                let tempMin =  Math.round(kelvinToCelsius(data.main.temp_min));
+                let temp_min_max = tempMax + "°C / " + tempMin;
+                let feels_like =  Math.round(kelvinToCelsius(data.main.feels_like));
+
+                // get humidity
+                let humidity = data.main.humidity;
+
+                // get weather condition
+                let icon = data.weather[0].icon;
+                let description = data.weather[0].description;
+                let weather = `<img src="http://openweathermap.org/img/wn/${icon}@2x.png" alt="${description}" title="${description}">`;
+
+                // get wind direction
+                let rotate = 35 - data.wind.deg;
+                let wind_direction = `<img src="./img/wind_arrow.png" class="wind_direction" style="transform:rotate(${rotate}deg)">`;
+
+                // get wind gust and wind speed
+                let wind_gust = Math.round(data.wind.gust);
+                let wind_speed = convertMsToMph(data.wind.speed);
+
+                // populate weather results 
+                $('.weather_result').append(`<tr class="align-middle">
+                <td>${date}</td>
+                <td>${temp} °C</td>
+                <td>${feels_like} °C</td>
+                <td>${temp_min_max} °C</td>
+                <td>${humidity} %</td>
+                <td>${weather}</td>
+                <td>${wind_direction}</td>
+                <td>${wind_gust} m/sec</td>
+                <td>${wind_speed} mph</td>
+                </tr>`);
+            });
+        }
+    });
+});
+
+// Add calendar Events in current year
+const addCalendarEvents = (year,iso2,countryName) =>{
+    $('.calendar-events>.event-header>p').html('');
+    $('.calendar-events>.event-header>p').append("formattedDate");
+    $.ajax({
+        url: "php/getApi.php",
+        type: 'POST',
+        dataType: 'json',
+        data: {
+          "api_name":'holiday',
+          "iso2" : iso2,
+          "year" : year,
+        },
+        success: function(result){
+            let calendarEvents = [];
+            $("#calendarModalLabel").html(`Holidays in ${decodeURIComponent(countryName)}`);
+            let holidays = result['data'].response.holidays;
+            const monthNames = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+            ];
+           
+            holidays.forEach((holiday,index) => {
+                 let dayIso = holiday.date.iso;
+                 let date = new Date(dayIso);
+                 let month = monthNames[date.getMonth()];
+                 formattedDate = month + "/" + date.getDay() + "/" + date.getFullYear();
+                 let event = {
+                    id: `event${index}`,
+                    name: holiday.name,
+                    date: formattedDate,
+                    description: holiday.description,
+                    type: "all",
+                    everyYear:true,
+                 };
+                 calendarEvents.push(event);   
+            }
+
+            );      
+            // setup calendar   
+            $('#calendar').evoCalendar({
+                theme:'Orange Coral',
+                calendarEvents:calendarEvents
+            })
+           }
+        })
+}
+
+// GENERATE XXX MODAL FUNCTIONS
 // generate country modal and show to the user
 const generateCountryModal = isoa2 =>{
    let cities_array =  [];
@@ -192,12 +417,6 @@ const generateCountryModal = isoa2 =>{
               "isoa2" : isoa2
             },
         success: function(result){
-            console.log(result['data']);
-            // erase fields
-            $(".languages").html("");
-            $(".topbigcities").html("");
-            $(".topsmallcities").html("");            
-
             // initialize required variables for fields 
             let flagSrc = result['data'].flag.file;
             let population = result['data'].population;
@@ -279,230 +498,84 @@ const generateCountryModal = isoa2 =>{
     $('#country_citiesModal').modal('show');
 }
 
-// populate table cities, depending on cities population
-const populateTableCities = cities =>{
-    let topBigCities = [];
-    let topSmallCities = [];
-    let topSmallCitiesLimit = [];
-    let className = ".topsmallcities";
-
-    // sorting big cities 
-    for(city in cities){
-        if(cities[city].population > 1000000){
-        topBigCities.push(cities[city]);
-      }
-    }
-    sortCitiesPopulation(topBigCities);
-
-    // sorting small cities 
-    for(city in cities){
-        if(cities[city].population >20000 && cities[city].population < 1000000){
-        topSmallCities.push(cities[city]);
-      }
-    }     
-    sortCitiesPopulation(topSmallCities); 
-    
-    // limiting small cities only show 100 on the table
-    for(let i = 0;i< topSmallCities.length;i++){
-        topSmallCitiesLimit.push(topSmallCities[i]);
-        if(i == 99){
-            break;
-        }
-    }
-    // draw tables by giving small and big cities results
-    drawCitiesTable(topSmallCitiesLimit,className);
-
-    if(topBigCities[0] != null && topBigCities[0].population > 1000000){
-      className = ".topbigcities";
-           drawCitiesTable(topBigCities,className);
-    }
-} 
-
-const numberWithCommas = number =>{
-    return number.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
-}
-
-// function that draw city table by giving result
-const drawCitiesTable = (cities,className) =>{
-    let id = 0;
-    let population = 0;
-    let name = ""
-    if(cities != null){
-         for(city in cities){
-        id++;
-        population = cities[city].population;
-        name = cities[city].name;
-        $(`${className}`).append("<tr><th scope='row'>"+ id + "</th><td>" + name + "</td><td>" + numberWithCommas(population) + "</td></tr>");
-    }   
-    }  
-}
-
-// sorting cities by population
-const sortCitiesPopulation = cities =>{
-    if(cities != null){
- 
-        cities.sort(function (a, b) {
-            return b.population - a.population;
-        });
-    }
-}
-
-// Kelvin to Celsius convertion
-const kelvinToCelsius = kelvin => kelvin-273.15;
-
 // generate wiki modal and show to the user
 const generateWikiModal = countryName =>{
     $.ajax({
-    url: "php/getApi.php",
-    type: 'POST',
-    dataType: 'json',
-    data: {
-      "api_name":'geonames',
-      "q" : countryName,
-    },
-    success: function(result){
-      if (result.status.name == "ok") {
-        $('#wiki-modal-body').html('');
+        url: "php/getApi.php",
+        type: 'POST',
+        dataType: 'json',
+        data: {
+        "api_name":'geonames',
+        "q" : countryName,
+        },
+        success: function(result){
+            if (result.status.name == "ok") {
+                $('#wiki-modal-body').html('');
         
-         wiki =  result['data'].geonames;
+                wiki =  result['data'].geonames;
 
-          $('#wiki-modal-body').append(`<div class="row wiki-result align-items-center">`);
+                $('#wiki-modal-body').append(`<div class="row wiki-result align-items-center">`);
+
         for(let i = 0; i < wiki.length; i++){
             let summary = ""
             let wiki_link = ""
             let thumbnailImg = "";
+
             summary = wiki[i].summary;
             wiki_link = wiki[i].wikipediaUrl;
             thumbnailImg = wiki[i].thumbnailImg;
-            console.log("i: " + i + " " + thumbnailImg);
             summary += ` <a href='https://${wiki_link}'> Learn More </a>`
-            console.log(i);
             $('.wiki-result').append(`<div class="summary col-12 col-lg-7"> ${summary}"</div>`);
-            if(typeof(thumbnailImg) != "undefined"){
-                 
+
+            // if we get no picture show our image - image not found
+            if(typeof(thumbnailImg) != "undefined"){   
                  $('.wiki-result').append(`<img  class="thumbnailImg d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block col-lg-5" src=${thumbnailImg}></div>`);
             }
             else{
                  $('.wiki-result').append(`<img class="d-none d-sm-block d-sm-none d-md-block d-md-none d-lg-block col-lg-5" src="./img/no-image-found.png"></div>`);
             }
-         
-        }
+        } // end for loop
       }
     }
   })
+
+  // show wiki modal
      $('#wikiModal').modal('show');
 }
 
 // generate youtube modal and show to the user
 const generateYoutubeModal = country =>{
      $.ajax({
-    url: "php/getApi.php",
-    type: 'POST',
-    dataType: 'json',
-    data: {
-      "api_name":'youtube',
-      "country" : country
-    },
-   success: function(result){
-       let aboutCountry = ""
-    $("#youtube_result").html("");
-    $('#youtubeModalLabel').html("");
+            url: "php/getApi.php",
+            type: 'POST',
+            dataType: 'json',
+            data: {
+            "api_name":'youtube',
+            "country" : country
+            },
+                success: function(result){
+                    let aboutCountry = ""
+                   
         video = result['data'].items[0].id.videoId;
         
-        aboutCountry = country.replace("%20", " ");
         $('#youtubeModalLabel').append(aboutCountry);
         $("#youtube_result").append(`<iframe src="https://www.youtube.com/embed/${video}?autoplay=1&controls=0&version=3&enablejsapi=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; modestbranding; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`);
     }
      })
+     // show youtube modal
    $('#youtubeModal').modal('show');
 }
 
-$( ".youtube-btn" ).click(function() {
-    $("#youtube_result").html("");
-});
-
-$(".calendar-close-btn").click(()=>{
-    // destroy
-$('#calendar').evoCalendar('destroy');
-});
-$( ".weather-close-btn" ).click(function() {
-    // erase all labels in forecast module
-    $("#citySelect").html("");
-    $('#weather_forecastModalLabel').html("");
-    $('.weather_result').html("");
-});
-
-$('#covidModal').on('hide.bs.modal', ()=>{ 
-    covidChart.destroy();
-})
-    
 // generate calendar modal and show to the user
 const generateCalendarModal = (iso2,countryName) =>{
     addCalendarEvents(new Date().getFullYear(),iso2,countryName);  
      $('#calendarModal').modal('show');
 }
 
-// Add calendar Events in current year
-const addCalendarEvents = (year,iso2,countryName) =>{
-    $('.calendar-events>.event-header>p').html('');
-    $('.calendar-events>.event-header>p').append("formattedDate");
-    $.ajax({
-        url: "php/getApi.php",
-        type: 'POST',
-        dataType: 'json',
-        data: {
-          "api_name":'holiday',
-          "iso2" : iso2,
-          "year" : year,
-        },
-        success: function(result){
-            let country = "";
-            let calendarEvents = [];
-            countryName = countryName.replace("%20", " ");
-            $("#calendarModalLabel").html("");
-            $("#holiday_table").html("");
-    
-            $("#calendarModalLabel").html(`Holidays in ${country}`);
-            let holidays = result['data'].response.holidays;
-            
-            const monthNames = ["January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December"
-            ];
-           
-            holidays.forEach((holiday,index) => {
-                 let dayIso = holiday.date.iso;
-                 let date = new Date(dayIso);
-                 let month = monthNames[date.getMonth()];
-                 formattedDate = month + "/" + date.getDay() + "/" + date.getFullYear();
-                 let event = {
-                    id: `event${index}`,
-                    name: holiday.name,
-                    date: formattedDate,
-                    description: holiday.description,
-                    type: "all",
-                    everyYear:true,
-                 };
-                 calendarEvents.push(event);   
- 
-            }
-            );      
-            // setup calendar   
-            $('#calendar').evoCalendar({
-                theme:'Orange Coral',
-                calendarEvents:calendarEvents
-            })
-           }
-        })
-     
-        $('#calendarModal').modal('show');
-}
 
 // generate weather modal and show to the user
 const generateWeatherModal = country =>{
-    // erase all labels in forecast module
-    $("#citySelect").html("");
-    $('#weather_forecastModalLabel').html("");
-
+    
     // convert country name to readable format with space
     country = country.replace("%20", " ");
 
@@ -521,7 +594,6 @@ const generateWeatherModal = country =>{
 
       // populate cites value and text in select element
       $.ajax(settings).done(function (response) {
-        // console.log(response.data);
         response.data.forEach(function (data) {
             $("<option>",{
               value: data,
@@ -536,10 +608,6 @@ const generateWeatherModal = country =>{
 
 // generate covid modal and show to the user
 const generateCovidModal = country =>{
-    // erase all labels 
-    $("#covidChart").html("");
-    $('#covidModalLabel').html("");
-
     // make lower case to accept api
     country = country.toLowerCase();
 
@@ -560,7 +628,7 @@ const generateCovidModal = country =>{
           "country" : country,
         },
         success: function(result){
-            $('#covidModalLabel').append("Get Covid Information In <br>" + decodeURIComponent(country));
+            $('#covidModalLabel').append("Get Covid Information In <br>" + decodeURIComponent(country.toUpperCase()));
             data = result['data'].data;
            
             // get label date for x axis and make sure is reverse order from smaller to todays day
@@ -649,105 +717,39 @@ const generateCovidModal = country =>{
     $('#covidModal').modal('show');
 }
 
-const formatAMPM = date => {
-    let hours = date.getHours();
-    let minutes = date.getMinutes();
-    let ampm = hours >= 12 ? 'pm' : 'am';
-    hours = hours % 12;
-    hours = hours ? hours : 12; // the hour '0' should be '12'
-    minutes = minutes < 10 ? '0'+minutes : minutes;
-    let strTime = hours + ':' + minutes + ' ' + ampm;
-    return strTime;
-  }
-
-//   Convert Meters Per Second to Miles Per Hour
-const convertMsToMph = ms => Math.round(ms * 2.236936);
-
-
-// Event trigger select change
-$('#countrySelect').change(function() {
-    let iso_a2 = $('#countrySelect option:selected').val();
-    
-    $.ajax({
-        url: "php/getApi.php",
-        type: 'POST',
-        dataType: 'json',
-        data: {
-            "api_name": "countryBorders",
-            iso: iso_a2
-        },
-        success: function(result) {
-            if (result.status.name == "ok") {
-                 drawCountryBorders(result['data'],iso_a2);
-                 // add all modal buttons to the map
-                 modalButtons.forEach(modal => modal.addTo(map));
-            }
-    
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-            console.log(jqXHR);
-        }
-    });
-});
-
-// Event trigger select change of city in weather module
-$('#citySelect').change(function() {
+// MODALS CLOSING FUNCTIONS
+// weather forecast closing
+$('#weather_forecastModal').on('hide.bs.modal', ()=>{ 
+    // erase all labels in forecast module
+    $("#citySelect").html("");
+    $('#weather_forecastModalLabel').html("");
     $('.weather_result').html("");
-    let city = $('#citySelect option:selected').val();
-    
-     // ajax call
-     $.ajax({
-        url: "php/getApi.php",
-        type: 'POST',
-        dataType: 'json',
-        data: {
-          "api_name":'open_weather_map',
-          "city" : city.replace(/\s/g, "%20"),
-        },
-        success: function(result){
-            result.data.list.forEach(function(data){
-                // get date info 
-                let date = data.dt_txt;
-                let full_date = date.substr(0,11);
-                let time = formatAMPM(new Date(date));
-                date = full_date + " * " + time + " * ";
 
-                // get temparature info
-                let temp =  Math.round(kelvinToCelsius(data.main.temp));
-                let tempMax =  Math.round(kelvinToCelsius(data.main.temp_max));
-                let tempMin =  Math.round(kelvinToCelsius(data.main.temp_min));
-                let temp_min_max = tempMax + "°C / " + tempMin;
-                let feels_like =  Math.round(kelvinToCelsius(data.main.feels_like));
+})
 
-                // get humidity
-                let humidity = data.main.humidity;
+// youtube closing
+$('#youtubeModal').on('hide.bs.modal', ()=>{ 
+    $("#youtube_result").html("");
+    $('#youtubeModalLabel').html("");
+})
 
-                // get weather condition
-                let icon = data.weather[0].icon;
-                let description = data.weather[0].description;
-                let weather = `<img src="http://openweathermap.org/img/wn/${icon}@2x.png" alt="${description}" title="${description}">`;
+// covid closing
+$('#covidModal').on('hide.bs.modal', ()=>{ 
+    $('#covidModalLabel').html("");
+    covidChart.destroy();
+})
+   
+// calendar closing
+$('#calendarModal').on('hide.bs.modal', ()=>{ 
+    $("#calendarModalLabel").html("");
+    $("#holiday_table").html("");
+    $('#calendar').evoCalendar('destroy');
+})
 
-                // get wind direction
-                let rotate = 35 - data.wind.deg;
-                let wind_direction = `<img src="./img/wind_arrow.png" class="wind_direction" style="transform:rotate(${rotate}deg)">`;
-
-                // get wind gust and wind speed
-                let wind_gust = Math.round(data.wind.gust);
-                let wind_speed = convertMsToMph(data.wind.speed);
-
-                // populate weather results 
-                $('.weather_result').append(`<tr class="align-middle">
-                <td>${date}</td>
-                <td>${temp} °C</td>
-                <td>${feels_like} °C</td>
-                <td>${temp_min_max} °C</td>
-                <td>${humidity} %</td>
-                <td>${weather}</td>
-                <td>${wind_direction}</td>
-                <td>${wind_gust} m/sec</td>
-                <td>${wind_speed} mph</td>
-                </tr>`);
-            });
-        }
-    });
-});
+// country cities closing
+$('#country_citiesModal').on('hide.bs.modal', ()=>{ 
+    // erase fields
+            $(".languages").html("");
+            $(".topbigcities").html("");
+            $(".topsmallcities").html(""); 
+})
