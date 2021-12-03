@@ -81,7 +81,7 @@ const  setMap = (position) =>{
     let userPositionlng = position.coords.longitude;
 
     // access map position and view
-    map = L.map('mapView',{zoomControl: false, scrollWheelZoom: false}).setView([userPositionlat,userPositionlng], 6);
+    map = L.map('mapView',{zoomControl: false, scrollWheelZoom: true}).setView([userPositionlat,userPositionlng], 3);
 
    // add layer for selected country
    countryBorderLayer = L.layerGroup().addTo(map);
@@ -132,7 +132,7 @@ const generateModalButton = (modalName,title)=>{
                     // get value from 
                     isoa2 = $('#countrySelect option:selected').val();
                     countryName = $('#countrySelect option:selected').text();
-                    countryName = countryName.replace(' ','%20');
+                    countryName = encodeURIComponent(countryName);
                     // depending on modal name we call specific functions for specific modals
                     switch(modalName){
                         case 'country_cities':
@@ -151,7 +151,7 @@ const generateModalButton = (modalName,title)=>{
                             generateWeatherModal(countryName);
                             break;      
                         case 'covid' :
-                            generateCovidModal(isoa2);
+                            generateCovidModal(countryName);
                             break;   
                     }
                     
@@ -432,12 +432,15 @@ $( ".weather-close-btn" ).click(function() {
     $('.weather_result').html("");
 });
 
+$('#covidModal').on('hide.bs.modal', ()=>{ 
+    covidChart.destroy();
+})
+    
 // generate calendar modal and show to the user
 const generateCalendarModal = (iso2,countryName) =>{
     addCalendarEvents(new Date().getFullYear(),iso2,countryName);  
      $('#calendarModal').modal('show');
 }
-
 
 // Add calendar Events in current year
 const addCalendarEvents = (year,iso2,countryName) =>{
@@ -527,11 +530,124 @@ const generateWeatherModal = country =>{
           })
       });
             
-     
       // show the modal
      $('#weather_forecastModal').modal('show');
 }
 
+// generate covid modal and show to the user
+const generateCovidModal = country =>{
+    // erase all labels 
+    $("#covidChart").html("");
+    $('#covidModalLabel').html("");
+
+    // make lower case to accept api
+    country = country.toLowerCase();
+
+    // create context 2d for canvas
+     let ctx = $("#covidChart")[0].getContext('2d');
+   
+     // make canvas fit size to our modal
+    ctx.canvas.width  = Math.round(window.innerWidth / 2);
+    ctx.canvas.height = Math.round(window.innerHeight / 2);
+   
+    // ajax call get covid-19 data for specic country name
+    $.ajax({
+        url: "php/getApi.php",
+        type: 'POST',
+        dataType: 'json',
+        data: {
+          "api_name":'covid_19',
+          "country" : country,
+        },
+        success: function(result){
+            $('#covidModalLabel').append("Get Covid Information In <br>" + decodeURIComponent(country));
+            data = result['data'].data;
+           
+            // get label date for x axis and make sure is reverse order from smaller to todays day
+             label_dates = Object.keys(data).reverse();
+            
+            // Gradient Fill, additional color for total cases
+            let gradient = ctx.createLinearGradient(0,0,0,400);
+            gradient.addColorStop(0, 'rgba(58,123,213,1');
+            gradient.addColorStop(1, 'rgba(0,210,255,0.3');
+
+            // configuration of all data be used in chart
+            const myData = {
+                labels: label_dates,
+                datasets: [
+                    {
+                    data: [],
+                    label: "Total Cases",
+                    fill: true,
+                    backgroundColor: gradient
+                },
+                {
+                    data: [],
+                    label: "Deaths",
+                    fill: true,
+                    backgroundColor: 'red'
+                },
+                {
+                    data: [],
+                    label: "Critical",
+                    fill: true,
+                    backgroundColor: 'purple'
+                },
+                {
+                    data: [],
+                    label: "Recovered",
+                    fill: true,
+                    backgroundColor: "green"
+                },
+                {
+                    data: [],
+                    label: "Tested",
+                    fill: false,
+                    backgroundColor: "yellow"
+                },
+                {
+                    data: [],
+                    label: "Death Ratio",
+                    fill: false,
+                    backgroundColor: "black"
+                },
+                {
+                    data: [],
+                    label: "Recovery Ratio",
+                    fill: false,
+                    backgroundColor: "#ff00aa"
+                }
+            ]
+            }
+
+            // get all info and set to our datasets, this data will be used to create y axis in chart 
+            for(let i = 0 ; i < label_dates.length;i++ ){
+                if(data[label_dates[i]] !== undefined){
+                    myData.datasets[0].data.push(data[label_dates[i]].total_cases);
+                    myData.datasets[1].data.push(data[label_dates[i]].deaths);
+                    myData.datasets[2].data.push(data[label_dates[i]].critical);
+                    myData.datasets[3].data.push(data[label_dates[i]].recovered);
+                    myData.datasets[4].data.push(data[label_dates[i]].tested);
+                    myData.datasets[5].data.push(data[label_dates[i]].death_ratio);
+                    myData.datasets[6].data.push(data[label_dates[i]].recovery_ratio);
+                }
+            }
+       
+            const config = {
+                type: 'line',
+                data: myData,
+                options: {
+                    responsive: true,
+                },
+            };
+            
+            // create chart using configuration 
+             covidChart = new Chart(ctx, config);
+        }
+    });
+    // show the modal 
+    $('#covidModal').modal('show');
+}
 
 const formatAMPM = date => {
     let hours = date.getHours();
@@ -547,10 +663,6 @@ const formatAMPM = date => {
 //   Convert Meters Per Second to Miles Per Hour
 const convertMsToMph = ms => Math.round(ms * 2.236936);
 
-// generate covid modal and show to the user
-const generateCovidModal = iso2 =>{
-     $('#covidModal').modal('show');
-}
 
 // Event trigger select change
 $('#countrySelect').change(function() {
