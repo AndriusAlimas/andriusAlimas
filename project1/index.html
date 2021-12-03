@@ -406,22 +406,24 @@
       aria-hidden="true"
     >
       <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content" id="covid-modal-content">
           <!-- header -->
           <div class="modal-header">
-            <h5 class="modal-title" id="covidModalLabel">
-              Get Covid Information
-            </h5>
+            <h5 class="modal-title" id="covidModalLabel"></h5>
             <button
               type="button"
-              class="btn-close"
+              class="btn-close covid-close-btn"
               data-bs-dismiss="modal"
               aria-label="Close"
             ></button>
           </div>
           <!-- body -->
 
-          <div class="modal-body">...</div>
+          <div class="modal-body">
+            <div class="chart">
+              <canvas id="covidChart"></canvas>
+            </div>
+          </div>
 
           <!-- footer -->
           <div class="modal-footer">
@@ -442,6 +444,12 @@
     <script src="./vendors/leaflet/leaflet.js"></script>
     <script src="./vendors/leaflet/easy-button.min.js"></script>
     <script src="./js/evo-calendar.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.6.0/chart.min.js"
+      integrity="sha512-GMGzUEevhWh8Tc/njS0bDpwgxdCJLQBWG3Z2Ct+JGOpVnEmjvNx6ts4v6A2XJf1HOrtOsfhv3hBKpK9kE5z8AQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
     <script src="js/script.js"></script>
   </body>
 </html>
