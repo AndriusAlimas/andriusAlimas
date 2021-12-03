@@ -104,6 +104,18 @@ iframe{
     width: 30%;
 }
 
+.chart{
+    position: relative;
+    width: auto;
+}
+
+
+
+#covid-modal-content{
+    display: flex;
+    height: fit-content;
+    width: fit-content;
+}
 .modal-content{
     width: auto;
     background-image: linear-gradient(to left bottom, #dcdc7b, #dfd366, #e4c951, #eabe3c, #f0b225);
