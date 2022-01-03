@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Web Developer Portfolio</title>
+    <!-- helps behave same in all browsers -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css"
+    />
+    <!-- to use font awesome icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
+      integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc="
+      crossorigin="anonymous"
+    />
+
+    <link rel="stylesheet" href="css/mystyle.css" />
+  </head>
+  <body>
+    <!-- Header section -->
+    <header>
+      <button class="nav-toggle" aria-label="toggle navigation">
+        <span class="hamburger"></span>
+      </button>
+
+      <!-- navigations -->
+      <nav>
+        <ul class="nav__list">
+          <li class="nav__item">
+            <a href="#about" class="nav__link">About</a>
+          </li>
+          <li class="nav__item">
+            <a href="#skills" class="nav__link">Skills</a>
+          </li>
+          <li class="nav__item"><a href="#" class="nav__link">Contact</a></li>
+          <li class="nav__item">
+            <a href="#portfolio" class="nav__link">Portfolio</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Introduction -->
+    <section class="intro">
+      <h1 class="section__title section__title--intro">
+        Hi, I am <strong>Andrius Alimas</strong>
+      </h1>
+      <p class="section__subtitle section__subtitle--intro">
+        &lt; Full Stack Web Dev &gt;
+      </p>
+      <img
+        src="img/profile.jpg"
+        alt="picture of Andrius Alimas in nature sitting on grasss "
+      />
+    </section>
+
+    <!-- About Me -->
+    <section class="about" id="about">
+      <h1 class="section__title section__title--about">About Me</h1>
+      <div class="book">
+        <img src="img/profile.jpg" alt="" />
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis impedit
+          quibusdam placeat a molestiae enim cumque consequatur quas, quos neque
+          cum iusto doloremque fuga. Repellendus reiciendis voluptatibus
+          voluptas optio facilis?
+        </p>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat
+          voluptatem, facere, dicta quam possimus excepturi natus sunt at
+          commodi, veritatis illo illum deserunt sequi? Voluptas accusantium et
+          id enim? Commodi!
+        </p>
+        <ul class="social-list">
+          <a class="social-list__link" href="https://github.com/AndriusAlimas">
+            <i class="fab fa-github"></i>
+          </a>
+          <a
+            class="social-list__link"
+            href="https://www.linkedin.com/in/andrius-alimas-4a6a081b3/"
+          >
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+          <a
+            class="social-list__link"
+            href="https://www.facebook.com/andrius.alimas"
+          >
+            <i class="fab fa-facebook-f"></i>
+          </a>
+        </ul>
+      </div>
+      <button class="view-cv" aria-label="view my cv"></button>
+    </section>
+
+    <!-- My Skills section -->
+    <section class="skills" id="skills">
+      <h1 class="section__title section__title--skills">My Skills</h1>
+
+      <div class="rotatingBox">
+        <span style="--i: 1"> <img src="img/html5.png" /> </span>
+        <span style="--i: 2"> <img src="img/css3.png" /> </span>
+        <span style="--i: 3"> <img src="img/js.png" /> </span>
+        <span style="--i: 4"> <img src="img/bootstrap.png" /> </span>
+        <span style="--i: 5"> <img src="img/jQuery.png" /> </span>
+        <span style="--i: 6"> <img src="img/node_js.svg" /> </span>
+        <span style="--i: 7"> <img src="img/react.png" /> </span>
+        <span style="--i: 8"> <img src="img/git.png" /> </span>
+        <span style="--i: 9"> <img src="img/php.png" /> </span>
+        <span style="--i: 10"> <img src="img/python.png" /> </span>
+        <span style="--i: 11"> <img src="img/mysql.png" /> </span>
+      </div>
+    </section>
+
+    <!-- Portfolio section -->
+    <section class="portfolio" id="portfolio">
+      <input type="checkbox" id="c1" />
+      <div id="portfolio-cover">
+        <h1 class="section__title section__title--portfolio">My Portfolio</h1>
+        <img src="img/profile.jpg" alt="" />
+      </div>
+      <div class="page-container">
+        <!-- Page - 1 -->
+        <div class="page" id="page-1">
+          <div class="back">
+            <label class="back-btn" for="c1">Back</label>
+          </div>
+          <div class="front">
+            <!-- Project title -->
+            <h2 class="section__subtitle section_subtitle--project">
+              Car Sharing
+            </h2>
+            <!-- Project description -->
+            <p class="section__paragraph section__paragraph--project">
+              If you want earn some money while you driving, you can register as
+              driver. Or if you want or planned trip, but you can't get by taxi
+              or any other transport, because its expensive. You can always
+              look, search, plan trip, within our app it will be less expensive
+              to use public transport and you will travel not alone, and save
+              energy for our planet.
+            </p>
+            <label class="next-btn" for="c1">Next</label>
+            <!-- button to site -->
+            <a
+              target="_blank"
+              href="https://alimas.me/WEB/13.Car%20Sharing%20(JS,PHP,MySQL,AJAX,JSON)/"
+              >See Live</a
+            >
+            <!-- button to source code -->
+            <a
+              target="_blank"
+              href="https://github.com/AndriusAlimas/CarSharing"
+              >Source Code</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

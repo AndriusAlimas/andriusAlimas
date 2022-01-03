@@ -5,7 +5,17 @@ $(window).on('load',  () =>{
         $(this).hide();
         $('nav, main').css('opacity',1);
         $('select').removeAttr("disabled");
-        navigator.geolocation.getCurrentPosition(setMap);
+        var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+if (isIOS) {
+ alert("HEY!!");
+} else {
+  console.log('This is Not a IOS device');
+}
+        let location = navigator.geolocation.getCurrentPosition(setMap)
+        if (location == undefined)  {
+            console.log("Locations is disabled");
+            setMap(location);
+        }
    });
   }
 })
@@ -77,9 +87,18 @@ const  sortCountries = () =>{
 
 // set map using user locations
 const  setMap = (position) =>{
-    let userPositionlat = position.coords.latitude;
-    let userPositionlng = position.coords.longitude;
-
+    let userPositionlat,userPositionlng;
+    if(position == undefined){
+        console.log("Disabled Location");
+        userPositionlat = 53.6969216
+        userPositionlng = -1.4974976
+    }else{
+        userPositionlat = position.coords.latitude;
+        userPositionlng = position.coords.longitude;
+        console.log(userPositionlat);
+        console.log(userPositionlng);
+    }
+ 
     // access map position and view
     map = L.map('mapView',{zoomControl: false, scrollWheelZoom: true}).setView([userPositionlat,userPositionlng], 3);
 
