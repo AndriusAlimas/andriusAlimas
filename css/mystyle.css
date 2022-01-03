@@ -6,24 +6,28 @@
 
 /* Custom properties: */
 :root {
-  // font family
+  /* font family */
   --ff-primary: 'Source Sans Pro', sans-serif;
   --ff-secondary: 'Source Code Pro', monospace;
 
-  // weight
+  /* weight */
   --fw-reg: 300;
   --fw-bold: 900;
 
-  // colors
+  /* colors */
   --clr-light: #fff;
   --clr-dark: #303030;
   --clr-accent: #16e0bd;
 
-  // size
+  /* size */
   --fs-h1: 3rem;
   --fs-h2: 2.25rem;
   --fs-h3: 1.25rem;
   --fs-body: 1rem;
+
+  /* shadow */
+  --bs: .25em .25em .75em rgba(54, 25, 25, 0.25),
+        .125em .125em .25em rgba(54,25,25,0.15);
 }
 
 @media (min-width: 800px){
@@ -52,6 +56,12 @@ section{
 img {
   display: block;
   max-width: 100%;
+}
+
+.intro__img{
+  min-width: 400px;
+  -webkit-box-shadow: var(--bs);
+  box-shadow: var(--bs);
 }
 
 input {
@@ -216,7 +226,7 @@ h3{
   position: relative;
 }
 
-@media (min-width: 400px){
+@media (min-width: 300px){
   .intro{
     display: grid;
     width: min-content;
@@ -230,7 +240,7 @@ h3{
 
   .intro__img{
     grid-area: img;
-    min-width: 250px;
+    min-width: 300px;
     position: relative;
     z-index: 2;
   }
@@ -243,5 +253,11 @@ h3{
     position: relative;
     left: -1.5em;
     width: calc(100% + 1.5em);
+  }
+}
+
+@media (min-width: 600px){
+  .intro__img{
+    min-width: 500px;
   }
 }
