@@ -1,0 +1,117 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+input {
+  display: none;
+}
+
+img {
+  width: 100%;
+  height: 100%;
+}
+
+.portfolio {
+  display: flex;
+  justify-content: center;
+}
+
+.page-container {
+  width: 250px;
+  height: 400px;
+  position: relative;
+  perspective: 1500px;
+}
+
+#portfolio-cover {
+  width: 250px;
+  height: 400px;
+  position: relative;
+}
+.section__title--portfolio {
+  position: absolute;
+  top: 17px;
+  left: 50px;
+}
+.page {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: left;
+  transform-style: preserve-3d;
+  transform: rotateY(0deg);
+  transition: 0.5s;
+  color: white;
+}
+
+.front,
+.back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+.section__title--portfolio {
+  z-index: 100;
+}
+.front {
+  background-color: #191966;
+}
+/* 3D rotating box feature in Skills section */
+.section__title--skills {
+  min-height: 70vh;
+  margin-bottom: 1em;
+  text-align: center;
+}
+
+.skills {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: #fff;
+}
+
+.rotatingBox {
+  position: relative;
+  width: 300px;
+  height: 150px;
+  transform-style: preserve-3d;
+  animation: animate 50s infinite;
+}
+
+.rotatingBox > span > img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+}
+
+/* make animation 3d */
+@keyframes animate {
+  0% {
+    transform: perspective(1000px) rotateY(0deg);
+  }
+  100% {
+    transform: perspective(1000px) rotateY(360deg);
+  }
+}
+.rotatingBox > span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform-origin: center;
+  transform-style: preserve-3d;
+  transform: rotateY(calc(var(--i) * 33deg)) translateZ(480px);
+  -webkit-box-reflect: below 0px
+    linear-gradient(transparent, transparent, #000004);
+}
