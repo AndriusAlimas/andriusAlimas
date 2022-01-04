@@ -11,12 +11,10 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css"
     />
     <!-- to use font awesome icons -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
-      integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc="
+    <script
+      src="https://kit.fontawesome.com/ddf5a7f0d5.js"
       crossorigin="anonymous"
-    />
+    ></script>
 
     <link rel="stylesheet" href="css/mystyle.css" />
   </head>
@@ -53,17 +51,70 @@
         &lt; Full Stack Dev &gt;
       </p>
       <img
-      class="intro__img"
+        class="intro__img"
         src="img/profile.jpg"
         alt="picture of Andrius Alimas in nature sitting on grasss "
       />
     </section>
 
-    <!-- About Me -->
-    <section class="about" id="about">
-      <h1 class="section__title section__title--about">About Me</h1>
-      <div class="book">
-        <img src="img/profile.jpg" alt="" />
+    <!-- Achievements -->
+    <section class="achievements" id="achievements">
+      <h1 class="section__title section__title--achievements">Achievements</h1>
+
+      <!-- Previous Button -->
+      <button id="prev-btn" name="prev">
+        <i class="fas fa-arrow-alt-circle-left"></i>
+      </button>
+
+      <div class="book" id="book">
+        <!-- Paper 1 -->
+        <div id="p1" class="paper">
+          <div class="front">
+            <div id="f1" class="front-content">
+              <h1>Front 1</h1>
+            </div>
+          </div>
+          <div class="back">
+            <div id="b1" class="back-content">
+              <h1>Back 1</h1>
+            </div>
+          </div>
+        </div>
+
+        <!-- Paper 2 -->
+        <div id="p2" class="paper">
+          <div class="front">
+            <div id="f2" class="front-content">
+              <h1>Front 2</h1>
+            </div>
+          </div>
+          <div class="back">
+            <div id="b2" class="back-content">
+              <h1>Back 2</h1>
+            </div>
+          </div>
+        </div>
+
+        <!-- Paper 3 -->
+        <div id="p3" class="paper">
+          <div class="front">
+            <div id="f3" class="front-content">
+              <h1>Front 3</h1>
+            </div>
+          </div>
+          <div class="back">
+            <div id="b3" class="back-content">
+              <h1>Back 3</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Next Button -->
+      <button id="next-btn" name="next">
+        <i class="fas fa-arrow-alt-circle-right"></i>
+      </button>
+      <!-- <img src="img/profile.jpg" alt="" />
         <p>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis impedit
           quibusdam placeat a molestiae enim cumque consequatur quas, quos neque
@@ -92,9 +143,9 @@
           >
             <i class="fab fa-facebook-f"></i>
           </a>
-        </ul>
-      </div>
-      <button class="view-cv" aria-label="view my cv"></button>
+        </ul> -->
+
+      <!-- <button class="view-cv" aria-label="view my cv"></button> -->
     </section>
 
     <!-- My Skills section -->
@@ -160,5 +211,9 @@
         </div>
       </div>
     </section>
+    <!-- upload javascript files -->
+    <script src="./vendors/jquery/jquery.min.js"></script>
+    <!-- custom js file -->
+    <script src="./js/main.js"></script>
   </body>
 </html>
